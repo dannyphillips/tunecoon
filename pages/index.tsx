@@ -1,14 +1,16 @@
 import {
   BaseStyles,
   Box,
-  Heading,
   CircleOcticon,
-  Flex
+  CounterLabel,
+  Flex,
+  Heading,
+  StyledOcticon
 } from "@primer/components";
 import { Fragment } from 'react'
 import { NextPage, NextPageContext } from "next";
 import { graphql } from "@octokit/graphql"
-import { GitPullRequest } from "@primer/octicons-react";
+import { GitPullRequest, Check, X } from "@primer/octicons-react";
 
 const Home: NextPage<any> = ({ repos }) => {
   debugger;
@@ -21,7 +23,8 @@ const Home: NextPage<any> = ({ repos }) => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Open Pulls</th>
+              <th>Conflicts</th>
+              <th>Failures</th>
               <th>Date</th>
             </tr>
           </thead>
@@ -34,14 +37,23 @@ const Home: NextPage<any> = ({ repos }) => {
                   <td>
                     <Flex alignItems="center">
                       <CircleOcticon icon={GitPullRequest} size={16} />
-                      {r.pullRequests.totalCount}
+                      <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
                     </Flex>
                   </td>
                 </tr>
                 {r.pullRequests && r.pullRequests.nodes.map((p) => (
                   <tr key={p.title}>
                     <td>{`${p.number}: ${p.title}`}</td>
-                    <td><a href={p.url}>{p.mergeable}</a></td>
+                    <td><a href={p.url}>{p.mergeable ?
+                      <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                      :
+                      <StyledOcticon icon={X} size={32} color="red.5" />
+                    }</a></td>
+                    <td>{p.baseRef.target.status.state == "SUCCESS" ?
+                      <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                      :
+                      <StyledOcticon icon={X} size={32} color="red.5" />
+                    }</td>
                     <td>{p.createdAt}</td>
                   </tr>
                 ))}
@@ -65,32 +77,35 @@ Home.getInitialProps = async (context: NextPageContext) => {
   let repository;
   repository = await graphqlWithAuth(`
   {
-    user(login: "dannyphillips") {
-      repositories(first: 50, affiliations: OWNER) {
-        nodes {
-          name
-          url
-          defaultBranchRef {
-            ... on Ref {
-              associatedPullRequests {
-                totalCount
+  user(login: "dannyphillips") {
+    repositories(first: 50, affiliations: OWNER) {
+      nodes {
+        name
+        url
+        pullRequests(first: 50, states: OPEN) {
+          nodes {
+            title
+            mergeable
+            createdAt
+            number
+            url
+            baseRef {
+              target {
+                ... on Commit {
+                  status {
+                    state
+                  }
+                }
               }
             }
           }
-          pullRequests(first: 50, states: OPEN) {
-            nodes {
-              title
-              mergeable
-              createdAt
-              number
-              url
-            }
-            totalCount
-          }
+          totalCount
         }
       }
     }
   }
+}
+
 `);
   // const { repositories } = await graphql({
   //   query: `
