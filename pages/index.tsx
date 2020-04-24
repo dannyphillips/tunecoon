@@ -40,6 +40,13 @@ const Home: NextPage<any> = ({ repos }) => {
                       <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
                     </Flex>
                   </td>
+                  <td>
+                    {r.baseRef.target.status.state == "FAILURE" ?
+                      <StyledOcticon icon={X} size={32} color="red.5" />
+                      :
+                      <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                    }
+                  </td>
                 </tr>
                 {r.pullRequests && r.pullRequests.nodes.map((p) => (
                   <tr key={p.title}>
@@ -77,35 +84,43 @@ Home.getInitialProps = async (context: NextPageContext) => {
   let repository;
   repository = await graphqlWithAuth(`
   {
-  user(login: "dannyphillips") {
-    repositories(first: 50, affiliations: OWNER) {
-      nodes {
-        name
-        url
-        pullRequests(first: 50, states: OPEN) {
-          nodes {
-            title
-            mergeable
-            createdAt
-            number
-            url
-            baseRef {
-              target {
-                ... on Commit {
-                  status {
-                    state
-                  }
+    user(login: "dannyphillips") {
+      repositories(first: 50, affiliations: OWNER) {
+        nodes {
+          name
+          url
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                status {
+                  state
                 }
               }
             }
           }
-          totalCount
+          pullRequests(first: 50, states: OPEN) {
+            nodes {
+              title
+              mergeable
+              createdAt
+              number
+              url
+              baseRef {
+                target {
+                  ... on Commit {
+                    status {
+                      state
+                    }
+                  }
+                }
+              }
+            }
+            totalCount
+          }
         }
       }
     }
   }
-}
-
 `);
   // const { repositories } = await graphql({
   //   query: `
