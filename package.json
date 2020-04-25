@@ -13,7 +13,7 @@
     "@primer/octicons-react": "9.6.0",
     "next": "9.3.5",
     "prop-types": "15.7.2",
-    "react": "16.9.0",
+    "react": "16.13.1",
     "react-dom": "16.9.0",
     "styled-components": "4.4.1"
   },
