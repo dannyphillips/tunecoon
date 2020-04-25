@@ -10,7 +10,7 @@ import {
 import { Fragment } from 'react'
 import { NextPage, NextPageContext } from "next";
 import { graphql } from "@octokit/graphql"
-import { GitPullRequest, Check, X } from "@primer/octicons-react";
+import { GitPullRequest, Check, X, Question } from "@primer/octicons-react";
 
 const Home: NextPage<any> = ({ repos }) => {
   debugger;
@@ -41,10 +41,13 @@ const Home: NextPage<any> = ({ repos }) => {
                     </Flex>
                   </td>
                   <td>
-                    {r.baseRef.target.status.state == "FAILURE" ?
-                      <StyledOcticon icon={X} size={32} color="red.5" />
-                      :
+                    {r.defaultBranchRef.target.status == null ?
+                      <StyledOcticon icon={Question} size={32} color="green.5" mr={2} />
+                    :
+                    r.defaultBranchRef.target.status.state == "SUCCESS" ?
                       <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                      :
+                      <StyledOcticon icon={X} size={32} color="red.5" />
                     }
                   </td>
                 </tr>
