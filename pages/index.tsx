@@ -18,7 +18,7 @@ const Home: NextPage<any> = ({ repos }) => {
   <BaseStyles>
     <Flex flexDirection="column" alignItems="center">
       <Box width={600}>
-        <Heading>My Repositories</Heading>
+        <Heading as="h1">My Repositories</Heading>
         <table>
           <thead>
             <tr>
