@@ -13,7 +13,6 @@ import { graphql } from "@octokit/graphql"
 import { GitPullRequest, Check, X, Question } from "@primer/octicons-react";
 
 const Home: NextPage<any> = ({ repos }) => {
-  debugger;
   return(
   <BaseStyles>
     <Flex flexDirection="column" alignItems="center">
@@ -41,29 +40,52 @@ const Home: NextPage<any> = ({ repos }) => {
                     </Flex>
                   </td>
                   <td>
-                    {r.defaultBranchRef.target.status == null ?
-                      <StyledOcticon icon={Question} size={32} color="green.5" mr={2} />
+                    {(r.defaultBranchRef != null) ?
+                      (
+                        r.defaultBranchRef.target.status == null ?
+                          <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
+                        :
+                          (
+                            r.defaultBranchRef.target.status.state == "SUCCESS" ?
+                              <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                            :
+                              <StyledOcticon icon={X} size={32} color="red.5" />
+                          )
+                      )
                     :
-                    r.defaultBranchRef.target.status.state == "SUCCESS" ?
-                      <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
-                      :
-                      <StyledOcticon icon={X} size={32} color="red.5" />
+                      <div>No Targets</div>
                     }
                   </td>
                 </tr>
                 {r.pullRequests && r.pullRequests.nodes.map((p) => (
                   <tr key={p.title}>
                     <td>{`${p.number}: ${p.title}`}</td>
-                    <td><a href={p.url}>{p.mergeable ?
-                      <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                    <td>
+                      <a href={p.url}>
+                        {p.mergeable ?
+                          <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                        :
+                          <StyledOcticon icon={X} size={32} color="red.5" />
+                        }
+                      </a>
+                    </td>
+                    <td>
+                      {p.baseRef != null ?
+                        (
+                          p.baseRef.target.status == null ?
+                            <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
+                          :
+                            (
+                              p.baseRef.target.status.state == "SUCCESS" ?
+                                <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                              :
+                                <StyledOcticon icon={X} size={32} color="red.5" />
+                            )
+                        )
                       :
-                      <StyledOcticon icon={X} size={32} color="red.5" />
-                    }</a></td>
-                    <td>{p.baseRef.target.status.state == "SUCCESS" ?
-                      <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
-                      :
-                      <StyledOcticon icon={X} size={32} color="red.5" />
-                    }</td>
+                        <div>No Targets</div>
+                      }
+                    </td>
                     <td>{p.createdAt}</td>
                   </tr>
                 ))}
