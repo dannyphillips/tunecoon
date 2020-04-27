@@ -21,10 +21,7 @@ export default class MyDocument extends Document<{
 
     return (
       <html lang="en">
-        <Head>
-          <title>NextJS Demo</title>
-          {styleTags}
-        </Head>
+        <Head>{styleTags}</Head>
         <body>
           <Main />
           <NextScript />
