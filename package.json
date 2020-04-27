@@ -7,9 +7,6 @@
     "build": "next build",
     "start": "next start"
   },
-  "engines": {
-    "node": "13.13.4"
-  },
   "dependencies": {
     "@octokit/graphql": "4.3.1",
     "@primer/components": "18.1.0",
