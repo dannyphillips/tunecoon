@@ -125,39 +125,6 @@ Home.getInitialProps = async (context: NextPageContext) => {
     }
   }
 `);
-  // const { repositories } = await graphql({
-  //   query: `
-  //     {
-  //       user(login: "dannyphillips") {
-  //         repositories(first: 50, affiliations: OWNER) {
-  //           nodes {
-  //             name
-  //             defaultBranchRef {
-  //               ... on Ref {
-  //                 associatedPullRequests {
-  //                   totalCount
-  //                 }
-  //               }
-  //             }
-  //             pullRequests(first: 50, states: OPEN) {
-  //               nodes {
-  //                 title
-  //                 mergeable
-  //                 createdAt
-  //                 number
-  //               }
-  //               totalCount
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   `
-  //   ,
-  //   headers: {
-  //     authorization: `token 2a9ad3590e9d8895a6c81e05e25a897662739cbd`
-  //   }
-  // });
   return {
     repos: repository,
   };
