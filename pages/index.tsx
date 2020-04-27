@@ -1,10 +1,13 @@
 import {
   BaseStyles,
   Box,
+  Button,
   CircleOcticon,
   CounterLabel,
+  Details,
   Flex,
   Heading,
+  Label,
   StyledOcticon
 } from "@primer/components";
 import { Fragment } from 'react'
@@ -18,35 +21,57 @@ const Home: NextPage<any> = ({ repos }) => {
     <Flex flexDirection="column" alignItems="center">
       <Box width={600}>
         <Heading as="h1">My Repositories</Heading>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Conflicts</th>
-              <th>Failures</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {repos && repos.user.repositories.nodes.map(r => (
-              <Fragment key={r.name}>
-                <tr>
-                  <td><a href={r.url}>{r.name}</a></td>
-                  <td>
-                    <Flex alignItems="center">
-                      <CircleOcticon icon={GitPullRequest} size={16} />
-                      <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
-                    </Flex>
-                  </td>
-                  <td>
-                    {(r.defaultBranchRef != null) ?
+          {repos && repos.user.repositories.nodes.map(r => (
+            <Details key={r.name}>
+                <Button as="summary">
+                <div><a href={r.url}>{r.name}</a></div>
+                <div>
+                  <Flex alignItems="center">
+                    <CircleOcticon icon={GitPullRequest} size={16} />
+                    <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
+                  </Flex>
+                </div>
+                <div>
+                  {(r.defaultBranchRef != null) ?
+                    (
+                      r.defaultBranchRef.target.status == null ?
+                        <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
+                      :
+                        (
+                          r.defaultBranchRef.target.status.state == "SUCCESS" ?
+                            <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                          :
+                            <StyledOcticon icon={X} size={32} color="red.5" />
+                        )
+                    )
+                  :
+                    <div>No Targets</div>
+                  }
+                </div>
+                <div>
+                  <Label as="summary">Show More</Label>
+                </div>
+                </Button>
+              {r.pullRequests && r.pullRequests.nodes.map((p) => (
+                <div key={p.title}>
+                  <div>{`${p.number}: ${p.title}`}</div>
+                  <div>
+                    <a href={p.url}>
+                      {p.mergeable ?
+                        <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                      :
+                        <StyledOcticon icon={X} size={32} color="red.5" />
+                      }
+                    </a>
+                  </div>
+                  <div>
+                    {p.baseRef != null ?
                       (
-                        r.defaultBranchRef.target.status == null ?
+                        p.baseRef.target.status == null ?
                           <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
                         :
                           (
-                            r.defaultBranchRef.target.status.state == "SUCCESS" ?
+                            p.baseRef.target.status.state == "SUCCESS" ?
                               <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
                             :
                               <StyledOcticon icon={X} size={32} color="red.5" />
@@ -55,44 +80,12 @@ const Home: NextPage<any> = ({ repos }) => {
                     :
                       <div>No Targets</div>
                     }
-                  </td>
-                </tr>
-                {r.pullRequests && r.pullRequests.nodes.map((p) => (
-                  <tr key={p.title}>
-                    <td>{`${p.number}: ${p.title}`}</td>
-                    <td>
-                      <a href={p.url}>
-                        {p.mergeable ?
-                          <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
-                        :
-                          <StyledOcticon icon={X} size={32} color="red.5" />
-                        }
-                      </a>
-                    </td>
-                    <td>
-                      {p.baseRef != null ?
-                        (
-                          p.baseRef.target.status == null ?
-                            <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
-                          :
-                            (
-                              p.baseRef.target.status.state == "SUCCESS" ?
-                                <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
-                              :
-                                <StyledOcticon icon={X} size={32} color="red.5" />
-                            )
-                        )
-                      :
-                        <div>No Targets</div>
-                      }
-                    </td>
-                    <td>{p.createdAt}</td>
-                  </tr>
-                ))}
-              </Fragment>
-            ))}
-          </tbody>
-        </table>
+                  </div>
+                  <div>{p.createdAt}</div>
+                </div>
+              ))}
+            </Details>
+          ))}
       </Box>
     </Flex>
   </BaseStyles>
