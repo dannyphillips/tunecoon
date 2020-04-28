@@ -43,7 +43,7 @@ const BranchCard = styled.div`
 `
 const IconBlock = styled(Flex)``
 
-const getStatus = (condition, successIcon, failIcon) =>
+const getStatusIcon = (condition, successIcon, failIcon) =>
   condition == true ?
     <StyledOcticon icon={successIcon} size={16} color="green.5" ml={2}/>
   :
@@ -58,6 +58,33 @@ const sortRepos = repos => repos.sort((a, b) => {
   return retVal;
 })
 
+const getTotalPRs = repos => {
+  let sum = 0
+  repos.forEach(r => {
+    sum += r.pullRequests.nodes.length
+  })
+  return sum
+}
+
+const getTotalMissingCI = (repos, status) => {
+  let sum = 0
+  repos.forEach(r => {
+    if (r.defaultBranchRef != null && r.defaultBranchRef.target.status == status) {
+       sum += 1
+    }
+  })
+  return sum
+}
+const getTotalFailures = (repos, status) => {
+  let sum = 0
+  repos.forEach(r => {
+    if (r.defaultBranchRef != null && r.defaultBranchRef.target.status != null && r.defaultBranchRef.target.status.state == status) {
+       sum += 1
+    }
+  })
+  return sum
+}
+
 const Home: NextPage<any> = ({ repos }) =>
   <BaseStyles>
     <Navbar alignItems="center" justifyContent="center">
@@ -65,67 +92,81 @@ const Home: NextPage<any> = ({ repos }) =>
         <Logo src="/static/logo.png" alt="my image" />
         <div>
           <Text>{repos.user.login}</Text>
-          <StyledOcticon icon={ChevronDown} size={16} color="white" ml={2} />
+          <StyledOcticon icon={ChevronDown} size={32} color="white" ml={2} />
         </div>
       </NavbarContent>
     </Navbar>
     <Flex flexDirection="column" alignItems="center">
       <Box width={600}>
-        <Heading as="h1">My Repos</Heading>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading as="h1">My Repos</Heading>
+          <IconBlock>
+            <Flex alignItems="center" ml={2} key="PRs">
+              <CircleOcticon icon={GitPullRequest} size={16} />
+              <CounterLabel>{getTotalPRs(repos.user.repositories.nodes)}</CounterLabel>
+            </Flex>
+            <Flex alignItems="center" ml={2} key="noCI">
+              <StyledOcticon icon={Question} size={16} color="yellow.5" ml={2} />
+              <CounterLabel>{getTotalMissingCI(repos.user.repositories.nodes, null)}</CounterLabel>
+            </Flex>
+            <Flex alignItems="center" ml={2} key="failures">
+              <StyledOcticon icon={X} size={16} color="red.5" ml={2} />
+              <CounterLabel>{getTotalFailures(repos.user.repositories.nodes, "FAILURE")}</CounterLabel>
+            </Flex>
+          </IconBlock>
+        </Flex>
         {repos && sortRepos(repos.user.repositories.nodes).map(r => (
-          <Box>
-            <Details key={r.name}>
-              <RepoCard as="summary">
+          <Details key={r.name}>
+            <RepoCard as="summary">
+              <Flex justifyContent="space-between" alignItems="center">
+                <Text><Link href={r.url}>{r.name}</Link></Text>
+                <IconBlock justifyContent="space-around" alignItems="center">
+                  {r.pullRequests.nodes.length > 0 && <Label outline ml={2}>Show More</Label>}
+                  <Flex alignItems="center" ml={2}>
+                    <CircleOcticon icon={GitPullRequest} size={16} />
+                    <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
+                  </Flex>
+                  {(r.defaultBranchRef != null) ?
+                    (
+                      r.defaultBranchRef.target.status != null ?
+                        // CI is Passing / Failing
+                        getStatusIcon(r.defaultBranchRef.target.status.state == "SUCCESS", Check, X)
+                      :
+                        // No CI Setup
+                        <StyledOcticon icon={Question} size={16} color="yellow.5" ml={2}/>
+                    )
+                  :
+                    <Label>No Branches</Label>
+                  }
+                </IconBlock>
+              </Flex>
+            </RepoCard>
+            {r.pullRequests && r.pullRequests.nodes.map((p) => (
+              <BranchCard key={p.title}>
                 <Flex justifyContent="space-between" alignItems="center">
-                  <Text><Link href={r.url}>{r.name}</Link></Text>
+                  <Link href={p.url}>
+                    <Text>{`${p.number}: ${p.title}`}</Text>
+                  </Link>
                   <IconBlock justifyContent="space-around" alignItems="center">
-                    {r.pullRequests.nodes.length > 0 && <Label outline ml={2}>Show More</Label>}
-                    <Flex alignItems="center" ml={2}>
-                      <CircleOcticon icon={GitPullRequest} size={16} />
-                      <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
-                    </Flex>
-                    {(r.defaultBranchRef != null) ?
+                    <Text fontStyle="italic" fontSize={10} ml={2}>{p.createdAt}</Text>
+                      {getStatusIcon(p.mergeable, Check, X)}
+                    {p.baseRef != null ?
                       (
-                        r.defaultBranchRef.target.status == null ?
+                        p.baseRef.target.status != null ?
+                          // CI is Passing / Failing
+                          getStatusIcon(p.baseRef.target.status.state == "SUCCESS", Check, X)
+                        :
                           // No CI Setup
                           <StyledOcticon icon={Question} size={16} color="yellow.5" ml={2}/>
-                        :
-                          // CI is Passing / Failing
-                          getStatus(r.defaultBranchRef.target.status.state == "SUCCESS", Check, X)
                       )
                     :
-                      <Label>No Branches</Label>
+                      <Label>No PRs</Label>
                     }
                   </IconBlock>
                 </Flex>
-              </RepoCard>
-              {r.pullRequests && r.pullRequests.nodes.map((p) => (
-                <BranchCard key={p.title}>
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Link href={p.url}>
-                      <Text>{`${p.number}: ${p.title}`}</Text>
-                    </Link>
-                    <IconBlock justifyContent="space-around" alignItems="center">
-                      <Text fontStyle="italic" fontSize={10} ml={2}>{p.createdAt}</Text>
-                        {getStatus(p.mergeable, Check, X)}
-                      {p.baseRef != null ?
-                        (
-                          p.baseRef.target.status == null ?
-                            // No CI Setup
-                            <StyledOcticon icon={Question} size={16} color="yellow.5" ml={2}/>
-                          :
-                            // CI is Passing / Failing
-                            getStatus(p.baseRef.target.status.state == "SUCCESS", Check, X)
-                        )
-                      :
-                        <Label>No PRs</Label>
-                      }
-                    </IconBlock>
-                  </Flex>
-                </BranchCard>
-              ))}
-            </Details>
-          </Box>
+              </BranchCard>
+            ))}
+          </Details>
         ))}
       </Box>
     </Flex>
@@ -157,6 +198,7 @@ Home.getInitialProps = async (context: NextPageContext) => {
             }
           }
           pullRequests(first: 50, states: OPEN) {
+            totalCount
             nodes {
               title
               mergeable
@@ -173,7 +215,6 @@ Home.getInitialProps = async (context: NextPageContext) => {
                 }
               }
             }
-            totalCount
           }
         }
       }
