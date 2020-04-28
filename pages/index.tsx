@@ -10,10 +10,19 @@ import {
   Label,
   StyledOcticon
 } from "@primer/components";
-import { Fragment } from 'react'
 import { NextPage, NextPageContext } from "next";
 import { graphql } from "@octokit/graphql"
 import { GitPullRequest, Check, X, Question } from "@primer/octicons-react";
+import styled from 'styled-components'
+
+const RepoCard = styled(Button)`
+  width: 100%;
+  margin: 10px 0px;
+`
+const IconBlock = styled.div`
+  width: 100px;
+  display: inline-block;
+`
 
 const Home: NextPage<any> = ({ repos }) => {
   return(
@@ -22,69 +31,76 @@ const Home: NextPage<any> = ({ repos }) => {
       <Box width={600}>
         <Heading as="h1">My Repositories</Heading>
           {repos && repos.user.repositories.nodes.map(r => (
-            <Details key={r.name}>
-                <Button as="summary">
-                <div><a href={r.url}>{r.name}</a></div>
-                <div>
-                  <Flex alignItems="center">
-                    <CircleOcticon icon={GitPullRequest} size={16} />
-                    <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
-                  </Flex>
-                </div>
-                <div>
-                  {(r.defaultBranchRef != null) ?
-                    (
-                      r.defaultBranchRef.target.status == null ?
-                        <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
-                      :
-                        (
-                          r.defaultBranchRef.target.status.state == "SUCCESS" ?
-                            <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+            <Box>
+              <Details key={r.name}>
+                <RepoCard as="summary">
+                    <Flex justifyContent="space-between" alignItems="center">
+                      <div><a href={r.url}>{r.name}</a></div>
+                      <IconBlock>
+
+                        <div>
+                          <Flex alignItems="center">
+                            <CircleOcticon icon={GitPullRequest} size={16} />
+                            <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
+                          </Flex>
+                        </div>
+                        <div>
+                          {(r.defaultBranchRef != null) ?
+                            (
+                              r.defaultBranchRef.target.status == null ?
+                                <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
+                              :
+                                (
+                                  r.defaultBranchRef.target.status.state == "SUCCESS" ?
+                                    <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                                  :
+                                    <StyledOcticon icon={X} size={32} color="red.5" />
+                                )
+                            )
                           :
-                            <StyledOcticon icon={X} size={32} color="red.5" />
-                        )
-                    )
-                  :
-                    <div>No Targets</div>
-                  }
-                </div>
-                <div>
-                  <Label as="summary">Show More</Label>
-                </div>
-                </Button>
-              {r.pullRequests && r.pullRequests.nodes.map((p) => (
-                <div key={p.title}>
-                  <div>{`${p.number}: ${p.title}`}</div>
-                  <div>
-                    <a href={p.url}>
-                      {p.mergeable ?
-                        <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
-                      :
-                        <StyledOcticon icon={X} size={32} color="red.5" />
-                      }
-                    </a>
-                  </div>
-                  <div>
-                    {p.baseRef != null ?
-                      (
-                        p.baseRef.target.status == null ?
-                          <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
+                            <div>No Targets</div>
+                          }
+                        </div>
+                        <div>
+                          <Label as="summary">{r.pullRequests.nodes.length > 0 && 'Show More'}</Label>
+                        </div>
+                      </IconBlock>
+                    </Flex>
+                </RepoCard>
+                {r.pullRequests && r.pullRequests.nodes.map((p) => (
+                  <div key={p.title}>
+                    <div>{`${p.number}: ${p.title}`}</div>
+                    <div>
+                      <a href={p.url}>
+                        {p.mergeable ?
+                          <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
                         :
-                          (
-                            p.baseRef.target.status.state == "SUCCESS" ?
-                              <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
-                            :
-                              <StyledOcticon icon={X} size={32} color="red.5" />
-                          )
-                      )
-                    :
-                      <div>No Targets</div>
-                    }
+                          <StyledOcticon icon={X} size={32} color="red.5" />
+                        }
+                      </a>
+                    </div>
+                    <div>
+                      {p.baseRef != null ?
+                        (
+                          p.baseRef.target.status == null ?
+                            <StyledOcticon icon={Question} size={32} color="yellow.5" mr={2} />
+                          :
+                            (
+                              p.baseRef.target.status.state == "SUCCESS" ?
+                                <StyledOcticon icon={Check} size={32} color="green.5" mr={2} />
+                              :
+                                <StyledOcticon icon={X} size={32} color="red.5" />
+                            )
+                        )
+                      :
+                        <div>No Targets</div>
+                      }
+                    </div>
+                    <div>{p.createdAt}</div>
                   </div>
-                  <div>{p.createdAt}</div>
-                </div>
-              ))}
-            </Details>
+                ))}
+              </Details>
+            </Box>
           ))}
       </Box>
     </Flex>
