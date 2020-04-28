@@ -14,16 +14,23 @@ import {
 } from "@primer/components";
 import { NextPage, NextPageContext } from "next";
 import { graphql } from "@octokit/graphql"
-import { GitPullRequest, Check, X, Question } from "@primer/octicons-react";
+import { GitPullRequest, Check, X, Question, ChevronDown } from "@primer/octicons-react";
 import styled from 'styled-components'
 
-const Header = styled(Flex)`
+const Navbar = styled(Flex)`
   width: 100%;
-  height: 48px;
-  background-color: blue;
+  height: 64px;
+  background-color: #3600B8;
   color: white;
-  padding: 0px 16px;
 `
+const NavbarContent = styled(Flex)`
+  width: 800px;
+  padding: 16px;
+`
+const Logo = styled.img`
+  height: 36px;
+`
+
 const RepoCard = styled(Button)`
   width: 100%;
   margin-top: 8px;
@@ -53,7 +60,15 @@ const sortRepos = repos => repos.sort((a, b) => {
 
 const Home: NextPage<any> = ({ repos }) =>
   <BaseStyles>
-    <Header alignItems="center" justifyContent="flex-start">Tune Coon</Header>
+    <Navbar alignItems="center" justifyContent="center">
+      <NavbarContent alignItems="center" justifyContent="space-between">
+        <Logo src="/static/logo.png" alt="my image" />
+        <div>
+          <Text>{repos.user.login}</Text>
+          <StyledOcticon icon={ChevronDown} size={16} color="white" ml={2} />
+        </div>
+      </NavbarContent>
+    </Navbar>
     <Flex flexDirection="column" alignItems="center">
       <Box width={600}>
         <Heading as="h1">My Repos</Heading>
@@ -127,6 +142,7 @@ Home.getInitialProps = async (context: NextPageContext) => {
   repository = await graphqlWithAuth(`
   {
     user(login: "dannyphillips") {
+      login
       repositories(first: 50, affiliations: OWNER) {
         nodes {
           name
