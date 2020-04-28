@@ -92,7 +92,7 @@ const Home: NextPage<any> = ({ repos }) =>
         <Logo src="/static/logo.png" alt="my image" />
         <div>
           <Text>{repos.user.login}</Text>
-          <StyledOcticon icon={ChevronDown} size={32} color="white" ml={2} />
+          <StyledOcticon icon={ChevronDown} size={16} color="white" ml={2} />
         </div>
       </NavbarContent>
     </Navbar>
@@ -102,15 +102,15 @@ const Home: NextPage<any> = ({ repos }) =>
           <Heading as="h1">My Repos</Heading>
           <IconBlock>
             <Flex alignItems="center" ml={2} key="PRs">
-              <CircleOcticon icon={GitPullRequest} size={16} />
+              <CircleOcticon icon={GitPullRequest} size={24} />
               <CounterLabel>{getTotalPRs(repos.user.repositories.nodes)}</CounterLabel>
             </Flex>
             <Flex alignItems="center" ml={2} key="noCI">
-              <StyledOcticon icon={Question} size={16} color="yellow.5" ml={2} />
+              <StyledOcticon icon={Question} size={24} color="yellow.5" ml={2} />
               <CounterLabel>{getTotalMissingCI(repos.user.repositories.nodes, null)}</CounterLabel>
             </Flex>
             <Flex alignItems="center" ml={2} key="failures">
-              <StyledOcticon icon={X} size={16} color="red.5" ml={2} />
+              <StyledOcticon icon={X} size={24} color="red.5" ml={2} />
               <CounterLabel>{getTotalFailures(repos.user.repositories.nodes, "FAILURE")}</CounterLabel>
             </Flex>
           </IconBlock>
