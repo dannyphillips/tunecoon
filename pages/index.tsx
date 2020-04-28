@@ -36,13 +36,20 @@ const getStatus = (condition, successIcon, failIcon) =>
     <StyledOcticon icon={failIcon} size={16} color="red.5" ml={2}/>;
 
 
-const Home: NextPage<any> = ({ repos }) => {
-  return(
+const sortRepos = repos => repos.sort((a, b) => {
+  let retVal = 0;
+  if (!a.pullRequests) retVal = -1;
+  if (!b.pullRequests) retVal = 1;
+  a.pullRequests.nodes.length < b.pullRequests.nodes.length ? retVal = 1 : retVal = -1;
+  return retVal;
+})
+
+const Home: NextPage<any> = ({ repos }) =>
   <BaseStyles>
     <Flex flexDirection="column" alignItems="center">
       <Box width={600}>
         <Heading as="h1">My Repositories</Heading>
-          {repos && repos.user.repositories.nodes.map(r => (
+          {repos && sortRepos(repos.user.repositories.nodes).map(r => (
             <Box>
               <Details key={r.name}>
                 <RepoCard as="summary">
@@ -100,8 +107,6 @@ const Home: NextPage<any> = ({ repos }) => {
       </Box>
     </Flex>
   </BaseStyles>
-);
-}
 
 Home.getInitialProps = async (context: NextPageContext) => {
   const graphqlWithAuth = graphql.defaults({
