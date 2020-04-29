@@ -50,11 +50,21 @@ const getStatusIcon = (condition, successIcon, failIcon) =>
     <StyledOcticon icon={failIcon} size={16} color="red.5" ml={2}/>;
 
 
-const sortRepos = repos => repos.sort((a, b) => {
+const sortReposPRCount = repos => repos.sort((a, b) => {
   let retVal = 0;
   if (!a.pullRequests) retVal = -1;
   if (!b.pullRequests) retVal = 1;
   a.pullRequests.nodes.length < b.pullRequests.nodes.length ? retVal = 1 : retVal = -1;
+  return retVal;
+})
+
+const sortReposDate = repos => repos.sort((a, b) => {
+  let retVal = 0;
+  if (a.defaultBranchRef == undefined) retVal = -1;
+  if (b.defaultBranchRef == undefined) retVal = 1;
+  if (a.defaultBranchRef && b.defaultBranchRef) {
+    a.defaultBranchRef.target.committedDate < a.defaultBranchRef.target.committedDate ? retVal = 1 : retVal = -1;
+  }
   return retVal;
 })
 
@@ -115,13 +125,18 @@ const Home: NextPage<any> = ({ repos }) =>
             </Flex>
           </IconBlock>
         </Flex>
-        {repos && sortRepos(repos.user.repositories.nodes).map(r => (
+        {repos && sortReposDate(repos.user.repositories.nodes).map(r => (
           <Details key={r.name}>
             <RepoCard as="summary">
               <Flex justifyContent="space-between" alignItems="center">
                 <Text><Link href={r.url}>{r.name}</Link></Text>
                 <IconBlock justifyContent="space-around" alignItems="center">
                   {r.pullRequests.nodes.length > 0 && <Label outline ml={2}>Show More</Label>}
+                  {(r.defaultBranchRef != null) ?
+                    <Text fontStyle="italic" fontSize={10} ml={2}>{r.defaultBranchRef.target.committedDate}</Text>
+                  :
+                    <Label>No Branches</Label>
+                  }
                   <Flex alignItems="center" ml={2}>
                     <CircleOcticon icon={GitPullRequest} size={16} />
                     <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
@@ -191,6 +206,7 @@ Home.getInitialProps = async (context: NextPageContext) => {
           defaultBranchRef {
             target {
               ... on Commit {
+                committedDate
                 status {
                   state
                 }
