@@ -13,6 +13,7 @@ import {
   Text
 } from "@primer/components";
 import { NextPage, NextPageContext } from "next";
+import { format, parseISO } from 'date-fns'
 import { graphql } from "@octokit/graphql"
 import { GitPullRequest, Check, X, Question, ChevronDown } from "@primer/octicons-react";
 import styled from 'styled-components'
@@ -58,15 +59,15 @@ const sortReposPRCount = repos => repos.sort((a, b) => {
   return retVal;
 })
 
-const sortReposDate = repos => repos.sort((a, b) => {
-  let retVal = 0;
-  if (a.defaultBranchRef == undefined) retVal = -1;
-  if (b.defaultBranchRef == undefined) retVal = 1;
-  if (a.defaultBranchRef && b.defaultBranchRef) {
-    a.defaultBranchRef.target.committedDate < a.defaultBranchRef.target.committedDate ? retVal = 1 : retVal = -1;
-  }
-  return retVal;
-})
+// const sortReposDate = repos => repos.sort((a, b) => {
+//   let retVal = 0;
+//   if (a.defaultBranchRef == undefined) retVal = 1;
+//   if (b.defaultBranchRef == undefined) retVal = 1;
+//   if (a.defaultBranchRef && b.defaultBranchRef) {
+//     a.defaultBranchRef.target.committedDate < a.defaultBranchRef.target.committedDate ? retVal = 1 : retVal = -1;
+//   }
+//   return retVal;
+// })
 
 const getTotalPRs = repos => {
   let sum = 0
@@ -125,7 +126,7 @@ const Home: NextPage<any> = ({ repos }) =>
             </Flex>
           </IconBlock>
         </Flex>
-        {repos && sortReposDate(repos.user.repositories.nodes).map(r => (
+        {repos && sortReposPRCount(repos.user.repositories.nodes).map(r => (
           <Details key={r.name}>
             <RepoCard as="summary">
               <Flex justifyContent="space-between" alignItems="center">
@@ -133,7 +134,7 @@ const Home: NextPage<any> = ({ repos }) =>
                 <IconBlock justifyContent="space-around" alignItems="center">
                   {r.pullRequests.nodes.length > 0 && <Label outline ml={2}>Show More</Label>}
                   {(r.defaultBranchRef != null) ?
-                    <Text fontStyle="italic" fontSize={10} ml={2}>{r.defaultBranchRef.target.committedDate}</Text>
+                    <Text fontStyle="italic" fontSize={10} ml={2}>{format(parseISO(r.defaultBranchRef.target.committedDate), 'MM-dd-yyyy')}</Text>
                   :
                     <Label>No Branches</Label>
                   }
@@ -163,7 +164,7 @@ const Home: NextPage<any> = ({ repos }) =>
                     <Text>{`${p.number}: ${p.title}`}</Text>
                   </Link>
                   <IconBlock justifyContent="space-around" alignItems="center">
-                    <Text fontStyle="italic" fontSize={10} ml={2}>{p.createdAt}</Text>
+                    <Text fontStyle="italic" fontSize={10} ml={2}>{format(parseISO(p.createdAt), "MM-dd-yyyy, h:m aa")}</Text>
                       {getStatusIcon(p.mergeable, Check, X)}
                     {p.baseRef != null ?
                       (
