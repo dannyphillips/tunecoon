@@ -95,6 +95,21 @@ const getTotalFailures = (repos, status) => {
   })
   return sum
 }
+const graphqlWithAuth = graphql.defaults({
+  headers: {
+    authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+  }
+});
+
+const mergePR = async (branchId) => await graphqlWithAuth(`
+  mutation {
+    mergePullRequest(input: {pullRequestId: "${branchId}"}) {
+      actor {
+        login
+      }
+    }
+  }
+`);
 
 const Home: NextPage<any> = ({ repos }) =>
   <BaseStyles>
@@ -163,6 +178,7 @@ const Home: NextPage<any> = ({ repos }) =>
                   <Link href={p.url}>
                     <Text>{`${p.number}: ${p.title}`}</Text>
                   </Link>
+                  <Button data-id={p.id} ml={2} onClick={(p: any) => mergePR(p.target.dataset.id)}>Merge</Button>
                   <IconBlock justifyContent="space-around" alignItems="center">
                     <Text fontStyle="italic" fontSize={10} ml={2}>{format(parseISO(p.createdAt), "MM-dd-yyyy, h:m aa")}</Text>
                       {getStatusIcon(p.mergeable, Check, X)}
@@ -189,11 +205,6 @@ const Home: NextPage<any> = ({ repos }) =>
   </BaseStyles>
 
 Home.getInitialProps = async (context: NextPageContext) => {
-  const graphqlWithAuth = graphql.defaults({
-    headers: {
-      authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
-    }
-  });
 
   let repository;
   repository = await graphqlWithAuth(`
@@ -217,6 +228,7 @@ Home.getInitialProps = async (context: NextPageContext) => {
           pullRequests(first: 50, states: OPEN) {
             totalCount
             nodes {
+              id
               title
               mergeable
               createdAt
