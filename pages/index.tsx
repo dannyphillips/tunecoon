@@ -58,7 +58,7 @@ const sortReposPRCount = repos => repos.sort((a, b) => {
   a.pullRequests.nodes.length < b.pullRequests.nodes.length ? retVal = 1 : retVal = -1;
   return retVal;
 })
-
+const filterArchived = repos => repos.filter((r) => r.isArchived == false)
 // const sortReposDate = repos => repos.sort((a, b) => {
 //   let retVal = 0;
 //   if (a.defaultBranchRef == undefined) retVal = 1;
@@ -141,7 +141,7 @@ const Home: NextPage<any> = ({ repos }) =>
             </Flex>
           </IconBlock>
         </Flex>
-        {repos && sortReposPRCount(repos.user.repositories.nodes).map(r => (
+        {repos && sortReposPRCount(filterArchived(repos.user.repositories.nodes)).map(r => (
           <Details key={r.name}>
             <RepoCard as="summary">
               <Flex justifyContent="space-between" alignItems="center">
@@ -215,6 +215,7 @@ Home.getInitialProps = async (context: NextPageContext) => {
         nodes {
           name
           url
+          isArchived
           defaultBranchRef {
             target {
               ... on Commit {
