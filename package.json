@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@octokit/graphql": "4.3.1",
+    "@octokit/graphql": "4.4.0",
     "@primer/components": "18.1.1",
     "@primer/octicons-react": "9.6.0",
     "date-fns": "^2.13.0",
