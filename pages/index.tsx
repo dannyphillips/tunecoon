@@ -15,7 +15,7 @@ import {
 import { NextPage, NextPageContext } from "next";
 import { format, parseISO } from 'date-fns'
 import { graphql } from "@octokit/graphql"
-import { GitPullRequest, Check, X, Question, ChevronDown } from "@primer/octicons-react";
+import { GitPullRequestIcon, CheckIcon, XIcon, QuestionIcon, ChevronDownIcon } from "@primer/octicons-react";
 import styled from 'styled-components'
 
 const Navbar = styled(Flex)`
@@ -118,7 +118,7 @@ const Home: NextPage<any> = ({ repos }) =>
         <Logo src="/static/logo.png" alt="my image" />
         <div>
           <Text>{repos.user.login}</Text>
-          <StyledOcticon icon={ChevronDown} size={16} color="white" ml={2} />
+          <StyledOcticon icon={ChevronDownIcon} size={16} color="white" ml={2} />
         </div>
       </NavbarContent>
     </Navbar>
@@ -128,15 +128,15 @@ const Home: NextPage<any> = ({ repos }) =>
           <Heading as="h1">My Repos</Heading>
           <IconBlock>
             <Flex alignItems="center" ml={2} key="PRs">
-              <CircleOcticon icon={GitPullRequest} size={24} />
+              <CircleOcticon icon={GitPullRequestIcon} size={24} />
               <CounterLabel>{getTotalPRs(repos.user.repositories.nodes)}</CounterLabel>
             </Flex>
             <Flex alignItems="center" ml={2} key="noCI">
-              <StyledOcticon icon={Question} size={24} color="yellow.5" ml={2} />
+              <StyledOcticon icon={QuestionIcon} size={24} color="yellow.5" ml={2} />
               <CounterLabel>{getTotalMissingCI(repos.user.repositories.nodes, null)}</CounterLabel>
             </Flex>
             <Flex alignItems="center" ml={2} key="failures">
-              <StyledOcticon icon={X} size={24} color="red.5" ml={2} />
+              <StyledOcticon icon={XIcon} size={24} color="red.5" ml={2} />
               <CounterLabel>{getTotalFailures(repos.user.repositories.nodes, "FAILURE")}</CounterLabel>
             </Flex>
           </IconBlock>
@@ -154,17 +154,17 @@ const Home: NextPage<any> = ({ repos }) =>
                     <Label>No Branches</Label>
                   }
                   <Flex alignItems="center" ml={2}>
-                    <CircleOcticon icon={GitPullRequest} size={16} />
+                    <CircleOcticon icon={GitPullRequestIcon} size={16} />
                     <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
                   </Flex>
                   {(r.defaultBranchRef != null) ?
                     (
                       r.defaultBranchRef.target.status != null ?
                         // CI is Passing / Failing
-                        getStatusIcon(r.defaultBranchRef.target.status.state == "SUCCESS", Check, X)
+                        getStatusIcon(r.defaultBranchRef.target.status.state == "SUCCESS", CheckIcon, XIcon)
                       :
                         // No CI Setup
-                        <StyledOcticon icon={Question} size={16} color="yellow.5" ml={2}/>
+                        <StyledOcticon icon={QuestionIcon} size={16} color="yellow.5" ml={2}/>
                     )
                   :
                     <Label>No Branches</Label>
@@ -181,15 +181,15 @@ const Home: NextPage<any> = ({ repos }) =>
                   <Button data-id={p.id} ml={2} onClick={(p: any) => mergePR(p.target.dataset.id)}>Merge</Button>
                   <IconBlock justifyContent="space-around" alignItems="center">
                     <Text fontStyle="italic" fontSize={10} ml={2}>{format(parseISO(p.createdAt), "MM-dd-yyyy, h:m aa")}</Text>
-                      {getStatusIcon(p.mergeable, Check, X)}
+                      {getStatusIcon(p.mergeable, CheckIcon, XIcon)}
                     {p.baseRef != null ?
                       (
                         p.baseRef.target.status != null ?
                           // CI is Passing / Failing
-                          getStatusIcon(p.baseRef.target.status.state == "SUCCESS", Check, X)
+                          getStatusIcon(p.baseRef.target.status.state == "SUCCESS", CheckIcon, XIcon)
                         :
                           // No CI Setup
-                          <StyledOcticon icon={Question} size={16} color="yellow.5" ml={2}/>
+                          <StyledOcticon icon={QuestionIcon} size={16} color="yellow.5" ml={2}/>
                       )
                     :
                       <Label>No PRs</Label>
