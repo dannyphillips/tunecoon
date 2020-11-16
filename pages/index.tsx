@@ -59,6 +59,7 @@ const sortReposPRCount = repos => repos.sort((a, b) => {
   return retVal;
 })
 const filterArchived = repos => repos.filter((r) => r.isArchived == false)
+const filterForks = repos => repos.filter((r) => r.isFork == false)
 // const sortReposDate = repos => repos.sort((a, b) => {
 //   let retVal = 0;
 //   if (a.defaultBranchRef == undefined) retVal = 1;
@@ -141,7 +142,7 @@ const Home: NextPage<any> = ({ repos }) =>
             </Flex>
           </IconBlock>
         </Flex>
-        {repos && sortReposPRCount(filterArchived(repos.user.repositories.nodes)).map(r => (
+        {repos && sortReposPRCount(filterForks(filterArchived(repos.user.repositories.nodes))).map(r => (
           <Details key={r.name}>
             <RepoCard as="summary">
               <Flex justifyContent="space-between" alignItems="center">
