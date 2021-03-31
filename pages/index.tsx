@@ -88,7 +88,6 @@ const getTotalMissingCI = (repos, status) => {
   return sum
 }
 const getTotalFailures = (repos, status) => {
-    debugger;
   let sum = 0
   repos.forEach(r => {
     if (r.defaultBranchRef != null && r.defaultBranchRef.target.status != null && r.defaultBranchRef.target.status.state == status) {
