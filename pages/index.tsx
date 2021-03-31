@@ -10,7 +10,8 @@ import {
   Label,
   Link,
   StyledOcticon,
-  Text
+  Text, 
+  // useDetails
 } from "@primer/components";
 import { NextPage, NextPageContext } from "next";
 import { format, parseISO } from 'date-fns'
@@ -112,150 +113,151 @@ const mergePR = async (branchId) => await graphqlWithAuth(`
   }
 `);
 
-const Home: NextPage<any> = ({ data }) => (
-  <BaseStyles>
-    <Navbar alignItems="center" justifyContent="center">
-      <NavbarContent alignItems="center" justifyContent="space-between">
-        <Logo src="/static/logo.png" alt="my image" />
-        <div>
-          <Text>{data.user.login}</Text>
-          <StyledOcticon
-            icon={ChevronDownIcon}
-            size={16}
-            color="white"
-            ml={2}
-          />
-        </div>
-      </NavbarContent>
-    </Navbar>
-    <Flex flexDirection="column" alignItems="center">
-      <Box width={600}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Heading as="h1">My Repos</Heading>
-          <IconBlock>
-            <Flex alignItems="center" ml={2} key="PRs">
-              <GitPullRequestIcon size={24} />
-              <CounterLabel>
-                {getTotalPRs(data.user.repositories.nodes)}
-              </CounterLabel>
-            </Flex>
-            <Flex alignItems="center" ml={2} key="noCI">
-              <QuestionIcon size={24} fill="yellow" />
-              <CounterLabel>
-                {getTotalMissingCI(data.user.repositories.nodes, null)}
-              </CounterLabel>
-            </Flex>
-            <Flex alignItems="center" ml={2} key="failures">
-              <XIcon size={24} fill="red" />
-              <CounterLabel>
-                {getTotalFailures(data.user.repositories.nodes, "FAILURE")}
-              </CounterLabel>
-            </Flex>
-          </IconBlock>
-        </Flex>
-        {data.user.repositories &&
-          sortReposPRCount(
-            filterForks(filterArchived(data.user.repositories.nodes))
-          ).map((r) => (
-            <Details key={r.name}>
-              <RepoCard as="summary">
-                <Flex justifyContent="space-between" alignItems="center">
-                  <Text>
-                    <Link href={r.url}>{r.name}</Link>
-                  </Text>
-                  <IconBlock justifyContent="space-around" alignItems="center">
-                    {r.pullRequests.nodes.length > 0 && (
-                      <Label outline ml={2}>
-                        Show More
-                      </Label>
-                    )}
-                    {r.defaultBranchRef != null ? (
-                      <Text fontStyle="italic" fontSize={10} ml={2}>
-                        {format(
-                          parseISO(r.defaultBranchRef.target.committedDate),
-                          "MM-dd-yyyy"
-                        )}
-                      </Text>
-                    ) : (
-                      <Label>No Branches</Label>
-                    )}
-                    <Flex alignItems="center" ml={2}>
-                      <CircleOcticon icon={GitPullRequestIcon} size={16} />
-                      <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
-                    </Flex>
-                    {r.defaultBranchRef != null ? (
-                      r.defaultBranchRef.target.status != null ? (
-                        // CI is Passing / Failing
-                        getStatusIcon(
-                          r.defaultBranchRef.target.status.state == "SUCCESS",
-                          CheckIcon,
-                          XIcon
-                        )
-                      ) : (
-                        // No CI Setup
-                        <QuestionIcon
-                          size={16}
-                          fill="yellow"
-                        />
-                      )
-                    ) : (
-                      <Label>No Branches</Label>
-                    )}
-                  </IconBlock>
-                </Flex>
-              </RepoCard>
-              {r.pullRequests &&
-                r.pullRequests.nodes.map((p) => (
-                  <BranchCard key={p.title}>
-                    <Flex justifyContent="space-between" alignItems="center">
-                      <Link href={p.url}>
-                        <Text>{`${p.number}: ${p.title}`}</Text>
-                      </Link>
-                      <Button
-                        data-id={p.id}
-                        ml={2}
-                        onClick={(p: any) => mergePR(p.target.dataset.id)}
-                      >
-                        Merge
-                      </Button>
-                      <IconBlock
-                        justifyContent="space-around"
-                        alignItems="center"
-                      >
+const Home: NextPage<any> = ({ data }) => {
+  // const { getDetailsProps, setOpen } = useDetails({closeOnOutsideClick: true, ref})
+  return (
+    <BaseStyles>
+      <Navbar alignItems="center" justifyContent="center">
+        <NavbarContent alignItems="center" justifyContent="space-between">
+          <Logo src="/static/logo.png" alt="my image" />
+          <div>
+            <Text>{data.user.login}</Text>
+            <ChevronDownIcon size={16} fill="white" />
+          </div>
+        </NavbarContent>
+      </Navbar>
+      <Flex flexDirection="column" alignItems="center">
+        <Box width={600}>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Heading as="h1">My Repos</Heading>
+            <IconBlock>
+              <Flex alignItems="center" ml={2} key="PRs">
+                <GitPullRequestIcon size={24} />
+                <CounterLabel>
+                  {getTotalPRs(data.user.repositories.nodes)}
+                </CounterLabel>
+              </Flex>
+              <Flex alignItems="center" ml={2} key="noCI">
+                <QuestionIcon size={24} fill="yellow" />
+                <CounterLabel>
+                  {getTotalMissingCI(data.user.repositories.nodes, null)}
+                </CounterLabel>
+              </Flex>
+              <Flex alignItems="center" ml={2} key="failures">
+                <XIcon size={24} fill="red" />
+                <CounterLabel>
+                  {getTotalFailures(data.user.repositories.nodes, "FAILURE")}
+                </CounterLabel>
+              </Flex>
+            </IconBlock>
+          </Flex>
+          {data.user.repositories &&
+            sortReposPRCount(
+              filterForks(filterArchived(data.user.repositories.nodes))
+            ).map((r) => (
+              <Details key={r.name}>
+                <RepoCard as="summary">
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text>
+                      <Link href={r.url}>{r.name}</Link>
+                    </Text>
+                    <IconBlock
+                      justifyContent="space-around"
+                      alignItems="center"
+                    >
+                      {r.pullRequests.nodes.length > 0 && (
+                        <Label outline ml={2}>
+                          Show More
+                        </Label>
+                      )}
+                      {r.defaultBranchRef != null ? (
                         <Text fontStyle="italic" fontSize={10} ml={2}>
-                          {format(parseISO(p.createdAt), "MM-dd-yyyy, h:m aa")}
+                          {format(
+                            parseISO(r.defaultBranchRef.target.committedDate),
+                            "MM-dd-yyyy"
+                          )}
                         </Text>
-                        {getStatusIcon(p.mergeable, CheckIcon, XIcon)}
-                        {p.baseRef != null ? (
-                          p.baseRef.target.status != null ? (
-                            // CI is Passing / Failing
-                            getStatusIcon(
-                              p.baseRef.target.status.state == "SUCCESS",
-                              CheckIcon,
-                              XIcon
-                            )
-                          ) : (
-                            // No CI Setup
-                            <StyledOcticon
-                              icon={QuestionIcon}
-                              size={16}
-                              color="yellow.5"
-                              ml={2}
-                            />
+                      ) : (
+                        <Label>No Branches</Label>
+                      )}
+                      <Flex alignItems="center" ml={2}>
+                        <CircleOcticon icon={GitPullRequestIcon} size={16} />
+                        <CounterLabel>{r.pullRequests.totalCount}</CounterLabel>
+                      </Flex>
+                      {r.defaultBranchRef != null ? (
+                        r.defaultBranchRef.target.status != null ? (
+                          // CI is Passing / Failing
+                          getStatusIcon(
+                            r.defaultBranchRef.target.status.state == "SUCCESS",
+                            CheckIcon,
+                            XIcon
                           )
                         ) : (
-                          <Label>No PRs</Label>
-                        )}
-                      </IconBlock>
-                    </Flex>
-                  </BranchCard>
-                ))}
-            </Details>
-          ))}
-      </Box>
-    </Flex>
-  </BaseStyles>
-);
+                          // No CI Setup
+                          <QuestionIcon size={16} fill="yellow" />
+                        )
+                      ) : (
+                        <Label>No Branches</Label>
+                      )}
+                    </IconBlock>
+                  </Flex>
+                </RepoCard>
+                {r.pullRequests &&
+                  r.pullRequests.nodes.map((p) => (
+                    <BranchCard key={p.title}>
+                      <Flex justifyContent="space-between" alignItems="center">
+                        <Link href={p.url}>
+                          <Text>{`${p.number}: ${p.title}`}</Text>
+                        </Link>
+                        <Button
+                          data-id={p.id}
+                          ml={2}
+                          onClick={(p: any) => mergePR(p.target.dataset.id)}
+                        >
+                          Merge
+                        </Button>
+                        <IconBlock
+                          justifyContent="space-around"
+                          alignItems="center"
+                        >
+                          <Text fontStyle="italic" fontSize={10} ml={2}>
+                            {format(
+                              parseISO(p.createdAt),
+                              "MM-dd-yyyy, h:m aa"
+                            )}
+                          </Text>
+                          {getStatusIcon(p.mergeable, CheckIcon, XIcon)}
+                          {p.baseRef != null ? (
+                            p.baseRef.target.status != null ? (
+                              // CI is Passing / Failing
+                              getStatusIcon(
+                                p.baseRef.target.status.state == "SUCCESS",
+                                CheckIcon,
+                                XIcon
+                              )
+                            ) : (
+                              // No CI Setup
+                              <StyledOcticon
+                                icon={QuestionIcon}
+                                size={16}
+                                color="yellow.5"
+                                ml={2}
+                              />
+                            )
+                          ) : (
+                            <Label>No PRs</Label>
+                          )}
+                        </IconBlock>
+                      </Flex>
+                    </BranchCard>
+                  ))}
+              </Details>
+            ))}
+        </Box>
+      </Flex>
+    </BaseStyles>
+  );
+};
 
 Home.getInitialProps = async (context: NextPageContext) => {
   let data;
