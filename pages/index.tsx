@@ -88,6 +88,7 @@ const getTotalMissingCI = (repos, status) => {
   return sum
 }
 const getTotalFailures = (repos, status) => {
+    debugger;
   let sum = 0
   repos.forEach(r => {
     if (r.defaultBranchRef != null && r.defaultBranchRef.target.status != null && r.defaultBranchRef.target.status.state == status) {
@@ -112,13 +113,13 @@ const mergePR = async (branchId) => await graphqlWithAuth(`
   }
 `);
 
-const Home: NextPage<any> = ({ repos }) =>
+const Home: NextPage<any> = ({ data }) =>
   <BaseStyles>
     <Navbar alignItems="center" justifyContent="center">
       <NavbarContent alignItems="center" justifyContent="space-between">
         <Logo src="/static/logo.png" alt="my image" />
         <div>
-          <Text>{repos.user.login}</Text>
+          <Text>{data.user.login}</Text>
           <StyledOcticon icon={ChevronDownIcon} size={16} color="white" ml={2} />
         </div>
       </NavbarContent>
@@ -130,19 +131,19 @@ const Home: NextPage<any> = ({ repos }) =>
           <IconBlock>
             <Flex alignItems="center" ml={2} key="PRs">
               <CircleOcticon icon={GitPullRequestIcon} size={24} />
-              <CounterLabel>{getTotalPRs(repos.user.repositories.nodes)}</CounterLabel>
+              <CounterLabel>{getTotalPRs(data.user.repositories.nodes)}</CounterLabel>
             </Flex>
             <Flex alignItems="center" ml={2} key="noCI">
               <StyledOcticon icon={QuestionIcon} size={24} color="yellow.5" ml={2} />
-              <CounterLabel>{getTotalMissingCI(repos.user.repositories.nodes, null)}</CounterLabel>
+              <CounterLabel>{getTotalMissingCI(data.user.repositories.nodes, null)}</CounterLabel>
             </Flex>
             <Flex alignItems="center" ml={2} key="failures">
               <StyledOcticon icon={XIcon} size={24} color="red.5" ml={2} />
-              <CounterLabel>{getTotalFailures(repos.user.repositories.nodes, "FAILURE")}</CounterLabel>
+              <CounterLabel>{getTotalFailures(data.user.repositories.nodes, "FAILURE")}</CounterLabel>
             </Flex>
           </IconBlock>
         </Flex>
-        {repos && sortReposPRCount(filterForks(filterArchived(repos.user.repositories.nodes))).map(r => (
+        {data.user.repositories && sortReposPRCount(filterForks(filterArchived(data.user.repositories.nodes))).map(r => (
           <Details key={r.name}>
             <RepoCard as="summary">
               <Flex justifyContent="space-between" alignItems="center">
@@ -206,9 +207,8 @@ const Home: NextPage<any> = ({ repos }) =>
   </BaseStyles>
 
 Home.getInitialProps = async (context: NextPageContext) => {
-
-  let repository;
-  repository = await graphqlWithAuth(`
+  let data;
+  data = await graphqlWithAuth(`
   {
     user(login: "dannyphillips") {
       login
@@ -216,6 +216,7 @@ Home.getInitialProps = async (context: NextPageContext) => {
         nodes {
           name
           url
+          isFork
           isArchived
           defaultBranchRef {
             target {
@@ -253,7 +254,7 @@ Home.getInitialProps = async (context: NextPageContext) => {
   }
 `);
   return {
-    repos: repository,
+    data: data,
   };
 };
 
