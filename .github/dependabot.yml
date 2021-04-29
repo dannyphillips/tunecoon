@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.27
+    - 14.14.30
+    - 14.14.33
+    - 14.14.34
+    - 14.14.36
+    - 14.14.39
+    - 15.0.0
+  - dependency-name: typescript
+    versions:
+    - 4.1.4
+    - 4.2.3
+  - dependency-name: date-fns
+    versions:
+    - 2.18.0
+  - dependency-name: "@primer/octicons-react"
+    versions:
+    - 11.3.0
+  - dependency-name: "@octokit/graphql"
+    versions:
+    - 4.5.9
