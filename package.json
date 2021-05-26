@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@octokit/graphql": "^4.6.2",
-    "@primer/components": "^28.0.4",
+    "@primer/components": "^28.1.1",
     "@primer/octicons-react": "^14.1.0",
     "date-fns": "^2.21.3",
     "next": "^10.2.3",
