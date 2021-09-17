@@ -7,8 +7,10 @@ export default class MyDocument extends Document<{
 }> {
   static getInitialProps({ renderPage }) {
     const sheet = new ServerStyleSheet();
-    const page = renderPage(App => props =>
-      sheet.collectStyles(<App {...props} />)
+    const page = renderPage(
+      // eslint-disable-next-line react/display-name
+      (App) => (props: any) =>
+        sheet.collectStyles(<App {...props} />)
     );
     return {
       ...page,
