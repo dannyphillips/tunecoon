@@ -376,13 +376,14 @@
   dependencies:
     "@octokit/openapi-types" "^10.1.0"
 
-"@primer/components@^29.1.1":
-  version "29.1.1"
-  resolved "https://registry.yarnpkg.com/@primer/components/-/components-29.1.1.tgz#4c84d986cb2e8eda576cc7da32efb66e4910a5e6"
-  integrity sha512-296wpOKbsowkhTHqUaVA+YHsuNhRPfqRWxEwFVipa6Q4UTGhiWotx85fJKzRjjOC9SzfyIwGQrDC8dRIWGMiXQ==
+"@primer/components@^30.2.1":
+  version "30.2.1"
+  resolved "https://registry.yarnpkg.com/@primer/components/-/components-30.2.1.tgz#50522c68091459a20f8e9d2f2ebd9e2700291fec"
+  integrity sha512-/siBEoYtIeSOoalEExy7YKuimQ1ocjo02+EhA8C7nm+BVbAG26dpBEc1g4HmmQ9Z61S+t+Nc23qezITWGyYrQw==
   dependencies:
     "@primer/octicons-react" "^13.0.0"
-    "@primer/primitives" "4.7.1"
+    "@primer/primitives" "4.8.1"
+    "@radix-ui/react-polymorphic" "0.0.14"
     "@react-aria/ssr" "3.1.0"
     "@styled-system/css" "5.1.5"
     "@styled-system/props" "5.1.5"
@@ -394,7 +395,6 @@
     "@types/styled-system__theme-get" "5.0.1"
     classnames "2.3.1"
     deepmerge "4.2.2"
-    eslint-plugin-primer-react "0.4.1"
     focus-visible "5.2.0"
     styled-system "5.1.5"
 
@@ -408,10 +408,15 @@
   resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-16.0.0.tgz#964cf7eac896cf2afdc79dcdd900e6f7471424be"
   integrity sha512-1/DszHbG39lJO5w5el/Eej3Qu2TW0ecDDeYGq5T1cwNsgCWgJmtk2bmyPYJRQyRtGzRQQ8db03E8OeM7ATPSbQ==
 
-"@primer/primitives@4.7.1":
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-4.7.1.tgz#2510ca37dd83d1e9cacda7637f2a594edff0391d"
-  integrity sha512-kttAUcP3QgT5UbYLeMTKDxPvnAVzywX0xnKPcLkmEVQyhmEBlTO4LSlYIzL5YcKyklHcFRf1426UcGOY9wdWDQ==
+"@primer/primitives@4.8.1":
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-4.8.1.tgz#05f76e47f67018514fd54b35ca615b9d27ef2a46"
+  integrity sha512-mgr6+EKpn4DixuhLt3drk7QmNQO8M7RYONWovg1nkV7p56jklhDLfZmp1luLUee37eQGAxx3ToStL6gqINFjnQ==
+
+"@radix-ui/react-polymorphic@0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-polymorphic/-/react-polymorphic-0.0.14.tgz#fc6cefee6686db8c5a7ff14c8c1b9b5abdee325b"
+  integrity sha512-9nsMZEDU3LeIUeHJrpkkhZVxu/9Fc7P2g2I3WR+uA9mTbNC3hGaabi0dV6wg0CfHb+m4nSs1pejbE/5no3MJTA==
 
 "@react-aria/ssr@3.1.0":
   version "3.1.0"
@@ -1533,11 +1538,6 @@ eslint-plugin-jsx-a11y@^6.4.1:
     has "^1.0.3"
     jsx-ast-utils "^3.1.0"
     language-tags "^1.0.5"
-
-eslint-plugin-primer-react@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-primer-react/-/eslint-plugin-primer-react-0.4.1.tgz#7094587d69fc23c2f94b1f035336248dfb1da9af"
-  integrity sha512-FMYe8ZQvyApHIXOhGUMhfiWTVlanWxuW75WBCnWjlr4hvtOz77GTUo0U/1IStk02zXMUzC37FLbNClbnip3fxw==
 
 eslint-plugin-react-hooks@^4.2.0:
   version "4.2.0"
