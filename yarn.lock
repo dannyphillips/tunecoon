@@ -376,13 +376,13 @@
   dependencies:
     "@octokit/openapi-types" "^10.1.0"
 
-"@primer/components@^30.2.1":
-  version "30.2.1"
-  resolved "https://registry.yarnpkg.com/@primer/components/-/components-30.2.1.tgz#50522c68091459a20f8e9d2f2ebd9e2700291fec"
-  integrity sha512-/siBEoYtIeSOoalEExy7YKuimQ1ocjo02+EhA8C7nm+BVbAG26dpBEc1g4HmmQ9Z61S+t+Nc23qezITWGyYrQw==
+"@primer/components@^31.0.1":
+  version "31.0.1"
+  resolved "https://registry.yarnpkg.com/@primer/components/-/components-31.0.1.tgz#720d85feede804f500174b793a1fb8bd4af9bfdf"
+  integrity sha512-ytGI7QPkhtz1UiZyXa1yunyHBd2SLSJfdn7bWD9jyT33GDnkav+0brcvkRxbuY5iWD8a1FXGtFdr4C3kOW1+Bg==
   dependencies:
     "@primer/octicons-react" "^13.0.0"
-    "@primer/primitives" "4.8.1"
+    "@primer/primitives" "5.1.0"
     "@radix-ui/react-polymorphic" "0.0.14"
     "@react-aria/ssr" "3.1.0"
     "@styled-system/css" "5.1.5"
@@ -394,6 +394,7 @@
     "@types/styled-system__css" "5.0.16"
     "@types/styled-system__theme-get" "5.0.1"
     classnames "2.3.1"
+    color2k "1.2.4"
     deepmerge "4.2.2"
     focus-visible "5.2.0"
     styled-system "5.1.5"
@@ -408,10 +409,10 @@
   resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-16.0.0.tgz#964cf7eac896cf2afdc79dcdd900e6f7471424be"
   integrity sha512-1/DszHbG39lJO5w5el/Eej3Qu2TW0ecDDeYGq5T1cwNsgCWgJmtk2bmyPYJRQyRtGzRQQ8db03E8OeM7ATPSbQ==
 
-"@primer/primitives@4.8.1":
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-4.8.1.tgz#05f76e47f67018514fd54b35ca615b9d27ef2a46"
-  integrity sha512-mgr6+EKpn4DixuhLt3drk7QmNQO8M7RYONWovg1nkV7p56jklhDLfZmp1luLUee37eQGAxx3ToStL6gqINFjnQ==
+"@primer/primitives@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-5.1.0.tgz#698ad3a173f3a1d7090651cce0a7088e4b93da39"
+  integrity sha512-pW8DIh6rZV0/R7lxHnVRJ/tdN4kDVSpAtdcCecxKsvtgK5d9haekt3ERpM6i93xKwB5CJYy9ouuC9C0UqWPI0A==
 
 "@radix-ui/react-polymorphic@0.0.14":
   version "0.0.14"
@@ -1103,6 +1104,11 @@ color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
+
+color2k@1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/color2k/-/color2k-1.2.4.tgz#af34950ac58e23cf224a01cb8dd0c9911a79605e"
+  integrity sha512-DiwdBwc0BryPFFXoCrW8XQGXl2rEtMToODybxZjKnN5IJXt/tV/FsN02pCK/b7KcWvJEioz3c74lQSmayFvS4Q==
 
 colorette@^1.2.2:
   version "1.4.0"
