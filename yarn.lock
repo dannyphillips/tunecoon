@@ -376,13 +376,13 @@
   dependencies:
     "@octokit/openapi-types" "^10.1.0"
 
-"@primer/components@^30.2.1":
-  version "30.2.1"
-  resolved "https://registry.yarnpkg.com/@primer/components/-/components-30.2.1.tgz#50522c68091459a20f8e9d2f2ebd9e2700291fec"
-  integrity sha512-/siBEoYtIeSOoalEExy7YKuimQ1ocjo02+EhA8C7nm+BVbAG26dpBEc1g4HmmQ9Z61S+t+Nc23qezITWGyYrQw==
+"@primer/components@^32.0.1":
+  version "32.0.1"
+  resolved "https://registry.yarnpkg.com/@primer/components/-/components-32.0.1.tgz#7d031941adff12bac65bc0bd3c76d8c1a3e48c28"
+  integrity sha512-Tp4KN6sl4uaPvi5CMeQQsHIPFb4WK4AcSaaayg1+PtQ1jCcFWEbzRNdlbPIzxDmCFPuiSbV0X+2X79zeq5b0kA==
   dependencies:
-    "@primer/octicons-react" "^13.0.0"
-    "@primer/primitives" "4.8.1"
+    "@primer/octicons-react" "^16.1.0"
+    "@primer/primitives" "7.1.1"
     "@radix-ui/react-polymorphic" "0.0.14"
     "@react-aria/ssr" "3.1.0"
     "@styled-system/css" "5.1.5"
@@ -394,24 +394,20 @@
     "@types/styled-system__css" "5.0.16"
     "@types/styled-system__theme-get" "5.0.1"
     classnames "2.3.1"
+    color2k "1.2.4"
     deepmerge "4.2.2"
     focus-visible "5.2.0"
     styled-system "5.1.5"
 
-"@primer/octicons-react@^13.0.0":
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-13.0.0.tgz#a7f2288fd9cf9cabc1e75553a0dd9f00d74b68c1"
-  integrity sha512-j5XppNRCvgaMZLPsVvvmp6GSh7P5pq6PUbsfLNBWi2Kz3KYDeoGDWbPr5MjoxFOGUn6Hjnt6qjHPRxahd11vLQ==
+"@primer/octicons-react@^16.0.0", "@primer/octicons-react@^16.1.0":
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-16.1.1.tgz#6a9eaffbbf46cb44d344a37a5ff2384973b82d3f"
+  integrity sha512-xCxQ5z23ol7yDuJs85Lc4ARzyoay+b3zOhAKkEMU7chk0xi2hT2OnRP23QUudNNDPTGozX268RGYLexUa6P4xw==
 
-"@primer/octicons-react@^16.0.0":
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-16.0.0.tgz#964cf7eac896cf2afdc79dcdd900e6f7471424be"
-  integrity sha512-1/DszHbG39lJO5w5el/Eej3Qu2TW0ecDDeYGq5T1cwNsgCWgJmtk2bmyPYJRQyRtGzRQQ8db03E8OeM7ATPSbQ==
-
-"@primer/primitives@4.8.1":
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-4.8.1.tgz#05f76e47f67018514fd54b35ca615b9d27ef2a46"
-  integrity sha512-mgr6+EKpn4DixuhLt3drk7QmNQO8M7RYONWovg1nkV7p56jklhDLfZmp1luLUee37eQGAxx3ToStL6gqINFjnQ==
+"@primer/primitives@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-7.1.1.tgz#46edb7f06fbe8809ebe2822bc692fc6c74dba98c"
+  integrity sha512-+Gwo89YK1OFi6oubTlah/zPxxzMNaMLy+inECAYI646KIFdzzhAsKWb3z5tSOu5Ff7no4isRV64rWfMSKLZclw==
 
 "@radix-ui/react-polymorphic@0.0.14":
   version "0.0.14"
@@ -1103,6 +1099,11 @@ color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
+
+color2k@1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/color2k/-/color2k-1.2.4.tgz#af34950ac58e23cf224a01cb8dd0c9911a79605e"
+  integrity sha512-DiwdBwc0BryPFFXoCrW8XQGXl2rEtMToODybxZjKnN5IJXt/tV/FsN02pCK/b7KcWvJEioz3c74lQSmayFvS4Q==
 
 colorette@^1.2.2:
   version "1.4.0"
