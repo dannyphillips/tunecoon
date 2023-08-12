@@ -382,10 +382,10 @@
   resolved "https://registry.npmjs.org/@primer/octicons-react/-/octicons-react-13.0.0.tgz"
   integrity sha512-j5XppNRCvgaMZLPsVvvmp6GSh7P5pq6PUbsfLNBWi2Kz3KYDeoGDWbPr5MjoxFOGUn6Hjnt6qjHPRxahd11vLQ==
 
-"@primer/octicons-react@^16.3.1":
-  version "16.3.1"
-  resolved "https://registry.npmjs.org/@primer/octicons-react/-/octicons-react-16.3.1.tgz"
-  integrity sha512-uzTs8/CvLiW1/47cgMRkIK9bKWpnw+UonCbgczXErwSSLqMDHfiiTpobW1trvRuoiMgLwsPo0l7kBBdKBnmq3g==
+"@primer/octicons-react@^19.5.0":
+  version "19.5.0"
+  resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-19.5.0.tgz#d02eb99842d6368b9f2d4011ebbd6f8b6dd620e6"
+  integrity sha512-8GZCcoyGz0CYhW+zi0yMsrn2qSBzZp4dbRomesAhtOzJLxKGZMyFd7VSp7mEYCCujMSCj/8faKgzyj7UrL6/3w==
 
 "@primer/primitives@4.8.1":
   version "4.8.1"
