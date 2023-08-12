@@ -22,9 +22,10 @@ export default class MyDocument extends Document<{
     const { styleTags } = this.props;
 
     return (
-      <Html lang='en'>
+      <Html lang="en">
         <Head>{styleTags}</Head>
         <body>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
           <Main />
           <NextScript />
         </body>
