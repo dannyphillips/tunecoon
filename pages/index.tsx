@@ -5,27 +5,26 @@ import {
   CircleOcticon,
   CounterLabel,
   Details,
-  Flex,
   Heading,
   Label,
   Link,
   StyledOcticon,
   Text, 
   // useDetails
-} from "@primer/components";
+} from "@primer/react";
 import { NextPage, NextPageContext } from "next";
 import { format, parseISO } from 'date-fns'
 import { graphql } from "@octokit/graphql"
 import { GitPullRequestIcon, CheckIcon, XIcon, QuestionIcon, ChevronDownIcon } from "@primer/octicons-react";
 import styled from 'styled-components'
 
-const Navbar = styled(Flex)`
+const Navbar = styled(Box)`
   width: 100%;
   height: 64px;
   background-color: #3600B8;
   color: white;
 `
-const NavbarContent = styled(Flex)`
+const NavbarContent = styled(Box)`
   width: 800px;
   padding: 16px;
 `
@@ -43,7 +42,8 @@ const BranchCard = styled.div`
   border: solid #e4e4e4 1px;
   border-top: 0px;
 `
-const IconBlock = styled(Flex)``
+const Flex = styled(Box)``
+const IconBlock = styled(Box)``
 
 const getStatusIcon = (condition, SuccessIcon, FailIcon) =>
   condition == true ?
