@@ -22,7 +22,7 @@
   "devDependencies": {
     "@types/node": "^20.5.7",
     "@types/react": "^18.0.9",
-    "@types/styled-system": "^5.1.16",
+    "@types/styled-system": "^5.1.17",
     "eslint": "^8.48.0",
     "eslint-config-next": "^13.4.16",
     "typescript": "^5.2.2"
