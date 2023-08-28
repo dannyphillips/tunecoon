@@ -156,7 +156,7 @@ const Home: NextPage<any> = ({ data }) => {
               filterForks(filterArchived(data.user.repositories.nodes))
             ).map((r) => (
               <Details key={r.name}>
-                <RepoCard as="summary">
+                <RepoCard>
                   <Flex justifyContent="space-between" alignItems="center">
                     <Text>
                       <Link href={r.url}>{r.name}</Link>
