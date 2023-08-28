@@ -166,7 +166,7 @@ const Home: NextPage<any> = ({ data }) => {
                       alignItems="center"
                     >
                       {r.pullRequests.nodes.length > 0 && (
-                        <Label outline ml={2}>
+                        <Label>
                           Show More
                         </Label>
                       )}
@@ -211,7 +211,6 @@ const Home: NextPage<any> = ({ data }) => {
                         </Link>
                         <Button
                           data-id={p.id}
-                          ml={2}
                           onClick={(p: any) => mergePR(p.target.dataset.id)}
                         >
                           Merge
@@ -241,7 +240,6 @@ const Home: NextPage<any> = ({ data }) => {
                                 icon={QuestionIcon}
                                 size={16}
                                 color="yellow.5"
-                                ml={2}
                               />
                             )
                           ) : (

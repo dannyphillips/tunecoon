@@ -10,7 +10,7 @@
   "dependencies": {
     "@octokit/graphql": "^4.6.4",
     "@primer/react": "^35.28.0",
-    "@primer/octicons-react": "^19.5.0",
+    "@primer/octicons-react": "^19.6.0",
     "date-fns": "^2.30.0",
     "next": "^12.3.1",
     "prop-types": "^15.8.1",
@@ -20,10 +20,10 @@
     "styled-components": "^5.3.11"
   },
   "devDependencies": {
-    "@types/node": "^20.5.0",
+    "@types/node": "^20.5.7",
     "@types/react": "^18.0.9",
     "@types/styled-system": "^5.1.16",
-    "eslint": "^8.47.0",
+    "eslint": "^8.48.0",
     "eslint-config-next": "^13.4.16",
     "typescript": "^5.1.6"
   },
