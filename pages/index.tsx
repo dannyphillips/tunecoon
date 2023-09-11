@@ -108,7 +108,7 @@ mutation {
 `);
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  let res: GetServerSideProps;
+  let res;
   res = await graphqlWithAuth(`
   {
     user(login: "dannyphillips") {
@@ -154,9 +154,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
     }
   }
 `);
-  const data = await res.json();
   return {
-    data: data
+    props: {
+      data: res
+    }
   };
 };
 
