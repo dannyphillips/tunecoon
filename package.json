@@ -25,7 +25,7 @@
     "@types/styled-system": "^5.1.17",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
-    "eslint-config-next": "^13.5.1",
+    "eslint-config-next": "^13.5.2",
     "typescript": "^5.2.2"
   },
   "engine": {
