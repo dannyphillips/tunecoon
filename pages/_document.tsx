@@ -5,9 +5,9 @@ import { ServerStyleSheet } from "styled-components";
 export default class MyDocument extends Document<{
   styleTags: any;
 }> {
-  static getInitialProps({ renderPage }) {
+  static async getInitialProps({ renderPage }) {
     const sheet = new ServerStyleSheet();
-    const page = renderPage(
+    const page = await renderPage(
       // eslint-disable-next-line react/display-name
       (App) => (props: any) =>
         sheet.collectStyles(<App {...props} />)

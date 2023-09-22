@@ -247,7 +247,7 @@ export default function Page({
                         </a>
                         <Button
                           data-id={p.id}
-                          onClick={(p: any) => mergePR(p.target.dataset.id)}
+                          onClick={(p: any) => mergePR(p.target.parentNode.dataset.id)}
                         >
                           Merge
                         </Button>
