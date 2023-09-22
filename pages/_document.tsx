@@ -1,13 +1,14 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
+import { DocumentContext } from "next/document";
 
 export default class MyDocument extends Document<{
   styleTags: any;
 }> {
-  static async getInitialProps(renderPage: any) {
+  static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();
-    const page = await renderPage(
+    const page = await ctx.renderPage(
       // eslint-disable-next-line react/display-name
       (App: any) => (props: any) =>
         sheet.collectStyles(<App {...props} />)
