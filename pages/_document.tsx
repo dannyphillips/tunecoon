@@ -9,7 +9,7 @@ export default class MyDocument extends Document<{
     const sheet = new ServerStyleSheet();
     const page = await renderPage(
       // eslint-disable-next-line react/display-name
-      (App) => (props: any) =>
+      (App: any) => (props: any) =>
         sheet.collectStyles(<App {...props} />)
     );
     return {

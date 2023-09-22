@@ -17,6 +17,7 @@ import {
   XIcon,
   QuestionIcon
 } from '@primer/octicons-react';
+import { useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
@@ -96,16 +97,19 @@ const graphqlWithAuth = graphql.defaults({
   }
 });
 
-const mergePR = async (branchId: any) =>
-  await graphqlWithAuth(`
-mutation {
-  mergePullRequest(input: {pullRequestId: "${branchId}"}) {
-    actor {
-      login
+const mergePR = async (branchId: any) => {
+  let res;
+  res = await graphqlWithAuth(`
+    mutation {
+      mergePullRequest(input: {pullRequestId: "${branchId}"}) {
+        actor {
+          login
+        }
+      }
     }
-  }
+  `);
+  return res;
 }
-`);
 
 export const getServerSideProps: GetServerSideProps = async () => {
   let res;
@@ -164,6 +168,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
 export default function Page({
   data
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const [loading, setLoading] = useState(false);
+    const onMerge = (id: string) => {
+      setLoading(true);
+      mergePR(id);
+      setTimeout(() => setLoading(false), 100);
+    }
   // const { getDetailsProps, setOpen } = useDetails({closeOnOutsideClick: true, ref})
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
@@ -246,8 +256,9 @@ export default function Page({
                           <Text>{`${p.number}: ${p.title}`}</Text>
                         </a>
                         <Button
+                          loading={loading}
                           data-id={p.id}
-                          onClick={(p: any) => mergePR(p.target.parentNode.dataset.id)}
+                          onClick={(p: any) => onMerge(p.target.parentNode.dataset.id)}
                         >
                           Merge
                         </Button>
