@@ -1,34 +1,44 @@
 {
-  "name": "tune-coon",
-  "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@octokit/graphql": "^7.0.1",
-    "@primer/octicons-react": "^19.8.0",
-    "@primer/react": "^35.30.0",
-    "date-fns": "^2.30.0",
-    "next": "^12.3.1",
-    "prop-types": "^15.8.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-is": "^18.2.0",
-    "styled-components": "^5.3.11"
-  },
-  "devDependencies": {
-    "@types/node": "^20.6.3",
+    "@primer/octicons-react": "^19.7.0",
+    "@tremor/react": "^3.7.4",
+    "@types/js-cookie": "^3.0.3",
+    "@types/node": "^20.6.0",
     "@types/react": "^18.2.21",
-    "@types/styled-system": "^5.1.17",
-    "@typescript-eslint/parser": "^6.7.2",
+    "@types/react-dom": "^18.2.7",
+    "@vercel/analytics": "^1.0.2",
+    "autoprefixer": "^10.4.15",
     "eslint": "^8.49.0",
-    "eslint-config-next": "^13.5.2",
+    "eslint-config-next": "^13.4.19",
+    "js-cookie": "^3.0.5",
+    "kysely": "^0.26.3",
+    "next": "^13.4.19",
+    "next-auth": "^4.23.1",
+    "postcss": "^8.4.29",
+    "prettier": "^3.0.3",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "server-only": "^0.0.1",
+    "styled-components": "^6.0.7",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2"
   },
-  "engine": {
-    "node": ">=16.0.0"
+  "prettier": {
+    "arrowParens": "always",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none"
   }
 }
