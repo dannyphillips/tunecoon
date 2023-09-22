@@ -168,11 +168,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
 export default function Page({
   data
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState('');
     const onMerge = (id: string) => {
-      setLoading(true);
+      setLoading(id);
       mergePR(id);
-      setTimeout(() => setLoading(false), 1000);
+      setTimeout(() => setLoading(''), 500);
     }
   // const { getDetailsProps, setOpen } = useDetails({closeOnOutsideClick: true, ref})
   return (
@@ -256,7 +256,7 @@ export default function Page({
                           <Text>{`${p.number}: ${p.title}`}</Text>
                         </a>
                         <Button
-                          loading={loading}
+                          loading={loading == p.id}
                           data-id={p.id}
                           onClick={(p: any) => onMerge(p.target.parentNode.dataset.id)}
                         >
