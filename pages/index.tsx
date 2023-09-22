@@ -249,7 +249,7 @@ export default function Page({
                   </Flex>
                 </Card>
                 {r.pullRequests &&
-                  r.pullRequests.nodes.map((p) => (
+                  r.pullRequests.nodes.map((p: any) => (
                     <Card key={p.title}>
                       <Flex justifyContent="between" alignItems="center">
                         <a href={p.url}>
