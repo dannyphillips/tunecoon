@@ -172,7 +172,7 @@ export default function Page({
     const onMerge = (id: string) => {
       setLoading(true);
       mergePR(id);
-      setTimeout(() => setLoading(false), 100);
+      setTimeout(() => setLoading(false), 1000);
     }
   // const { getDetailsProps, setOpen } = useDetails({closeOnOutsideClick: true, ref})
   return (
