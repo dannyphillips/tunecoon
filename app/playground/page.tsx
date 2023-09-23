@@ -28,7 +28,7 @@ const app = [
 
 const data = [
   {
-    category: 'Website',
+    category: 'Commits',
     stat: '10,234',
     data: website
   },
