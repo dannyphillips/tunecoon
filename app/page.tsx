@@ -1,18 +1,15 @@
 "use client"
 
 import Search from './search';
-import UsersTable from './table';
 import {
   Badge,
   Button,
-  Card,
   Flex,
   Title,
   Subtitle,
   Text,
   Italic,
   Accordion,
-  AccordionList,
   AccordionHeader,
   AccordionBody,
   Grid
@@ -240,11 +237,11 @@ export default function IndexPage({
                           <a href={r.url}>{r.name}</a>
                         </Text>
                         <Flex justifyContent="around" alignItems="center">
-                          <Flex alignItems="center">
+                          <Flex justifyContent="end" alignItems="center">
                             <GitPullRequestIcon />
                             <Badge size="sm">{r.pullRequests.totalCount}</Badge>
                           </Flex>
-                          {r.defaultBranchRef != null ? (
+                          {r.defaultBranchRef != null && (
                             r.defaultBranchRef.target.status != null ? (
                               // CI is Passing / Failing
                               getStatusIcon(
@@ -256,14 +253,14 @@ export default function IndexPage({
                               // No CI Setup
                               <QuestionIcon size={16} fill="yellow" />
                             )
-                          ) : (
-                            <Title>No Branches</Title>
                           )}
                         </Flex>
                       </Flex>
                     </AccordionHeader>
                     <AccordionBody>
-                      {r.pullRequests?.nodes.map((p: any) => (
+                      {r.pullRequests.nodes.length == 0 ? (
+                        <Subtitle>No PRs</Subtitle>
+                      ) : r.pullRequests?.nodes.map((p: any) => (
                         <Flex flexDirection='col'>
                           <a href={p.url}>
                             <Text>{`${p.number}: ${p.title}`}</Text>
@@ -283,7 +280,7 @@ export default function IndexPage({
                               )}
                             </Italic>
                             {getStatusIcon(p.mergeable, CheckIcon, XIcon)}
-                            {p.baseRef != null ? (
+                            {p.baseRef != null && (
                               p.baseRef.target.status != null ? (
                                 // CI is Passing / Failing
                                 getStatusIcon(
@@ -295,9 +292,8 @@ export default function IndexPage({
                                 // No CI Setup
                                 <QuestionIcon />
                               )
-                            ) : (
-                              <Subtitle>No PRs</Subtitle>
-                            )}
+                            )
+                            }
                           </Flex>
                         </Flex>
                       ))}
