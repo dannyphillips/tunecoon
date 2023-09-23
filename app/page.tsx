@@ -10,7 +10,12 @@ import {
   Title,
   Subtitle,
   Text,
-  Italic
+  Italic,
+  Accordion,
+  AccordionList,
+  AccordionHeader,
+  AccordionBody,
+  Grid
 } from '@tremor/react';
 import { format, parseISO } from 'date-fns';
 import { graphql } from '@octokit/graphql';
@@ -18,6 +23,7 @@ import {
   GitPullRequestIcon,
   CheckIcon,
   XIcon,
+  ShieldXIcon,
   QuestionIcon
 } from '@primer/octicons-react';
 import { useEffect, useState } from 'react';
@@ -66,18 +72,18 @@ const getTotalPRs = (repos: any) => {
   return sum;
 };
 
-const getTotalMissingCI = (repos: any, status: any) => {
-  let sum = 0;
-  repos?.forEach((r: any) => {
-    if (
-      r.defaultBranchRef != null &&
-      r.defaultBranchRef.target.status == status
-    ) {
-      sum += 1;
-    }
-  });
-  return sum;
-};
+// const getTotalMissingCI = (repos: any, status: any) => {
+//   let sum = 0;
+//   repos?.forEach((r: any) => {
+//     if (
+//       r.defaultBranchRef != null &&
+//       r.defaultBranchRef.target.status == status
+//     ) {
+//       sum += 1;
+//     }
+//   });
+//   return sum;
+// };
 const getTotalFailures = (repos: any, status: any) => {
   let sum = 0;
   repos?.forEach((r: any) => {
@@ -189,55 +195,44 @@ export default function IndexPage({
   else
     return (
       <main className="p-4 md:p-10 mx-auto max-w-7xl">
-        <Flex dir="column" alignItems="center">
-          <Flex>
-            <Flex justifyContent="between" alignItems="center">
-              <Title>My Repos</Title>
-              <Flex>
-                <Flex alignItems="center" key="PRs">
-                  <GitPullRequestIcon size={24} />
-                  <Badge size="sm">
-                    {getTotalPRs(data)}
-                  </Badge>
-                </Flex>
-                <Flex alignItems="center" key="noCI">
-                  <QuestionIcon size={24} fill="yellow" />
-                  <Badge size="sm">
-                    {getTotalMissingCI(data, null)}
-                  </Badge>
-                </Flex>
-                <Flex alignItems="center" key="failures">
-                  <XIcon size={24} fill="red" />
-                  <Badge size="sm">
-                    {getTotalFailures(data, 'FAILURE')}
-                  </Badge>
-                </Flex>
+        <Flex flexDirection="col" alignItems="center">
+          <Flex justifyContent="between" alignItems="center">
+            <Title>My Repos</Title>
+            <Flex>
+              <Flex alignItems="center" justifyContent='end' key="PRs">
+                <GitPullRequestIcon size={24} />
+                <Badge size="sm">
+                  {getTotalPRs(data)}
+                </Badge>
+              </Flex>
+              {/*  NO CI HAS BEEN SETUP FOR THESE REPOS
+              <Flex alignItems="center" key="noCI">
+                <QuestionIcon size={24} fill="yellow" />
+                <Badge size="sm">
+                  {getTotalMissingCI(data, null)}
+                </Badge>
+              </Flex> */}
+              <Flex alignItems="center" justifyContent='end' key="failures">
+                <ShieldXIcon size={24} fill="red" />
+                <Badge size="sm">
+                  {getTotalFailures(data, 'FAILURE')}
+                </Badge>
               </Flex>
             </Flex>
+          </Flex>
+          <Grid numItemsLg={4} numItemsSm={1} numItemsMd={2}>
             {data &&
               sortReposPRCount(
                 filterForks(filterArchived(data))
               ).map((r: any) => (
-                <Flex key={r.name}>
-                  <Card>
+                <Accordion className="m-4 min-w-200">
+                  <AccordionHeader>
+
                     <Flex justifyContent="between" alignItems="center">
                       <Text>
                         <a href={r.url}>{r.name}</a>
                       </Text>
                       <Flex justifyContent="around" alignItems="center">
-                        {r.pullRequests.nodes.length > 0 && (
-                          <Text>Show More</Text>
-                        )}
-                        {r.defaultBranchRef != null ? (
-                          <Italic>
-                            {format(
-                              parseISO(r.defaultBranchRef.target.committedDate),
-                              'MM-dd-yyyy'
-                            )}
-                          </Italic>
-                        ) : (
-                          <Text>No Branches</Text>
-                        )}
                         <Flex alignItems="center">
                           <GitPullRequestIcon />
                           <Badge size="sm">{r.pullRequests.totalCount}</Badge>
@@ -248,7 +243,7 @@ export default function IndexPage({
                             getStatusIcon(
                               r.defaultBranchRef.target.status.state == 'SUCCESS',
                               CheckIcon,
-                              XIcon
+                              ShieldXIcon
                             )
                           ) : (
                             // No CI Setup
@@ -259,51 +254,49 @@ export default function IndexPage({
                         )}
                       </Flex>
                     </Flex>
-                  </Card>
-                  {r.pullRequests &&
-                    r.pullRequests.nodes.map((p: any) => (
-                      <Card key={p.title}>
-                        <Flex justifyContent="between" alignItems="center">
-                          <a href={p.url}>
-                            <Text>{`${p.number}: ${p.title}`}</Text>
-                          </a>
-                          <Button
-                            loading={isLoading == p.id}
-                            data-id={p.id}
-                            onClick={(p: any) => onMerge(p.target.parentNode.dataset.id)}
-                          >
-                            Merge
-                          </Button>
-                          <Flex justifyContent="around" alignItems="center">
-                            <Italic>
-                              {format(
-                                parseISO(p.createdAt),
-                                'MM-dd-yyyy, h:m aa'
-                              )}
-                            </Italic>
-                            {getStatusIcon(p.mergeable, CheckIcon, XIcon)}
-                            {p.baseRef != null ? (
-                              p.baseRef.target.status != null ? (
-                                // CI is Passing / Failing
-                                getStatusIcon(
-                                  p.baseRef.target.status.state == 'SUCCESS',
-                                  CheckIcon,
-                                  XIcon
-                                )
-                              ) : (
-                                // No CI Setup
-                                <QuestionIcon />
+                  </AccordionHeader>
+                  <AccordionBody>
+                    {r.pullRequests?.nodes.map((p: any) => (
+                      <Flex flexDirection='col'>
+                        <a href={p.url}>
+                          <Text>{`${p.number}: ${p.title}`}</Text>
+                        </a>
+                        <Button
+                          loading={isLoading == p.id}
+                          data-id={p.id}
+                          onClick={(p: any) => onMerge(p.target.parentNode.dataset.id)}
+                        >
+                          Merge
+                        </Button>
+                        <Flex justifyContent="around" alignItems="center">
+                          <Italic>
+                            {format(
+                              parseISO(p.createdAt),
+                              'MM-dd-yyyy, h:m aa'
+                            )}
+                          </Italic>
+                          {getStatusIcon(p.mergeable, CheckIcon, XIcon)}
+                          {p.baseRef != null ? (
+                            p.baseRef.target.status != null ? (
+                              // CI is Passing / Failing
+                              getStatusIcon(
+                                p.baseRef.target.status.state == 'SUCCESS',
+                                CheckIcon,
+                                XIcon
                               )
                             ) : (
-                              <Subtitle>No PRs</Subtitle>
-                            )}
-                          </Flex>
+                              // No CI Setup
+                              <QuestionIcon />
+                            )
+                          ) : (
+                            <Subtitle>No PRs</Subtitle>
+                          )}
                         </Flex>
-                      </Card>
+                      </Flex>
                     ))}
-                </Flex>
+                  </AccordionBody></Accordion>
               ))}
-          </Flex>
+          </Grid>
         </Flex>
       </main>
     );
