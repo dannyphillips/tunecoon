@@ -229,7 +229,7 @@ export default function IndexPage({
                 sortReposPRCount(
                   filterForks(filterArchived(data))
                 ).map((r: any) => (
-                  <Accordion className="m-4 min-w-200">
+                  <Accordion className="m-4 min-w-200" key={r}>
                     <AccordionHeader>
 
                       <Flex justifyContent="between" alignItems="center">
@@ -261,7 +261,7 @@ export default function IndexPage({
                       {r.pullRequests.nodes.length == 0 ? (
                         <Subtitle>No PRs</Subtitle>
                       ) : r.pullRequests?.nodes.map((p: any) => (
-                        <Flex flexDirection='col'>
+                        <Flex flexDirection='col' key={p}>
                           <a href={p.url}>
                             <Text>{`${p.number}: ${p.title}`}</Text>
                           </a>
@@ -297,7 +297,8 @@ export default function IndexPage({
                           </Flex>
                         </Flex>
                       ))}
-                    </AccordionBody></Accordion>
+                    </AccordionBody>
+                  </Accordion>
                 ))}
             </Grid>
           </Flex>
