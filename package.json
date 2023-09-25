@@ -12,7 +12,7 @@
     "@heroicons/react": "^2.0.18",
     "@octokit/graphql": "^7.0.1",
     "@primer/octicons-react": "^19.7.0",
-    "@tremor/react": "^3.7.4",
+    "@tremor/react": "^3.7.9",
     "@types/js-cookie": "^3.0.3",
     "@types/node": "^20.6.5",
     "@types/react": "^18.2.21",
