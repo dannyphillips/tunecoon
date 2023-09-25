@@ -15,8 +15,8 @@ dependencies:
     specifier: ^7.0.2
     version: 7.0.2
   '@primer/octicons-react':
-    specifier: ^19.7.0
-    version: 19.7.0(react@18.2.0)
+    specifier: ^19.8.0
+    version: 19.8.0(react@18.2.0)
   '@tremor/react':
     specifier: ^3.7.9
     version: 3.7.9(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.3)
@@ -1780,8 +1780,8 @@ packages:
       tslib: 2.5.3
     dev: false
 
-  /@primer/octicons-react@19.7.0(react@18.2.0):
-    resolution: {integrity: sha512-KzB7P+Ew3ud/ua61tQFkTvdS2aIfKUMsT/uHUCvIzfHTcB49xD1MIoQLAwoshiEH4M+aLLGFNCLfBC/xTIH8vw==}
+  /@primer/octicons-react@19.8.0(react@18.2.0):
+    resolution: {integrity: sha512-2Z+D7xTloFTLQVRUEbg0pQpe6aTL9RR+8RqBhjkrF+BFuVdM1ENOyjywaGEO7DIkPU5Zxlv0gxSlD85LQxL+sw==}
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.3'
