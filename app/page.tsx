@@ -114,7 +114,7 @@ const mergePR = async (branchId: any) => {
   return res;
 }
 
-export const getRepoData = async () => {
+const getRepoData = async () => {
   return await graphqlWithAuth(`
     {
       user(login: "dannyphillips") {
