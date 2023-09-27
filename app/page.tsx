@@ -24,20 +24,21 @@ import {
   QuestionIcon
 } from '@primer/octicons-react';
 import { useEffect, useState } from 'react';
+import React from 'react';
 
 export const dynamic = 'force-dynamic';
 
 type repositoriesArray = []
 
 
-const getStatusIcon = (condition: any, SuccessIcon: any, FailIcon: any) =>
+export const getStatusIcon = (condition: any, SuccessIcon: any, FailIcon: any) =>
   condition == true ? (
     <SuccessIcon size={16} fill="green" ml={2} />
   ) : (
     <FailIcon size={16} fill="red" ml={2} />
   );
 
-const sortReposPRCount = (repos: any) =>
+export const sortReposPRCount = (repos: any) =>
   repos?.sort((a: any, b: any) => {
     let retVal = 0;
     if (!a.pullRequests) retVal = -1;
@@ -47,9 +48,9 @@ const sortReposPRCount = (repos: any) =>
       : (retVal = -1);
     return retVal;
   });
-const filterArchived = (repos: any) =>
+export const filterArchived = (repos: any) =>
   repos?.filter((r: any) => r.isArchived == false);
-const filterForks = (repos: any) =>
+export const filterForks = (repos: any) =>
   repos?.filter((r: any) => r.isFork == false);
 // const sortReposDate = repos => repos?.sort((a, b) => {
 //   let retVal = 0;
@@ -61,7 +62,7 @@ const filterForks = (repos: any) =>
 //   return retVal;
 // })
 
-const getTotalPRs = (repos: any) => {
+export const getTotalPRs = (repos: any) => {
   let sum = 0;
   repos?.forEach((r: any) => {
     sum += r.pullRequests.nodes.length;
@@ -81,7 +82,7 @@ const getTotalPRs = (repos: any) => {
 //   });
 //   return sum;
 // };
-const getTotalFailures = (repos: any, status: any) => {
+export const getTotalFailures = (repos: any, status: any) => {
   let sum = 0;
   repos?.forEach((r: any) => {
     if (
@@ -100,7 +101,7 @@ const graphqlWithAuth = graphql.defaults({
   }
 });
 
-const mergePR = async (branchId: any) => {
+export const mergePR = async (branchId: any) => {
   let res;
   res = await graphqlWithAuth(`
     mutation {

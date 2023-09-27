@@ -11,7 +11,7 @@ import { Bold, Title } from '@tremor/react';
 
 const navigation = [
   { name: 'My Repos', href: '/' },
-  { name: 'Playground', href: '/playground' }
+  { name: 'Dashboard', href: '/dashboard' }
 ];
 
 function classNames(...classes: string[]) {
