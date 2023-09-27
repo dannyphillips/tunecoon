@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import { CheckIcon, XIcon } from '@primer/octicons-react';
-import { getStatusIcon, sortReposPRCount, filterArchived, filterForks, getTotalPRs, getTotalFailures } from './utils';
+import { getStatusIcon, sortReposPRCount, filterArchived, filterForks, getTotalPRs, getTotalFailures, groupMRsBySemverBumps } from './utils';
 
 describe('getStatusIcon', () => {
   it('returns SuccessIcon when condition is true', () => {
@@ -12,6 +12,91 @@ describe('getStatusIcon', () => {
   it('returns FailIcon when condition is false', () => {
     const { container } = render(getStatusIcon(false, CheckIcon, XIcon));
     expect(container.querySelector('svg')).toHaveClass('octicon-x');
+  });
+});
+
+describe('groupMRsBySemverBumps', () => {
+  it('should group MRs by "major" and "minor/patch" semver bumps', () => {
+    const repos = [
+      {
+        name: 'repo1',
+        pullRequests: {
+          nodes: [
+            { title: 'Fix bug', mergeable: true },
+            { title: 'Add new feature', mergeable: true },
+            { title: 'Major release', mergeable: true },
+            { title: 'Minor release', mergeable: true },
+          ],
+        },
+      },
+      {
+        name: 'repo2',
+        pullRequests: {
+          nodes: [
+            { title: 'Fix issue', mergeable: true },
+            { title: 'Patch release', mergeable: true },
+          ],
+        },
+      },
+    ];
+
+    const groupedMRs = groupMRsBySemverBumps(repos);
+
+    expect(groupedMRs).toEqual({
+      repo1: {
+        major: [
+          { title: 'Major release', mergeable: true },
+        ],
+        minorPatch: [
+          { title: 'Fix bug', mergeable: true },
+          { title: 'Add new feature', mergeable: true },
+          { title: 'Minor release', mergeable: true },
+        ],
+      },
+      repo2: {
+        major: [],
+        minorPatch: [
+          { title: 'Fix issue', mergeable: true },
+          { title: 'Patch release', mergeable: true },
+        ],
+      },
+    });
+  });
+
+  it('should handle empty repositories', () => {
+    const repos: any[] = [];
+
+    const groupedMRs = groupMRsBySemverBumps(repos);
+
+    expect(groupedMRs).toEqual({});
+  });
+
+  it('should handle repositories without pull requests', () => {
+    const repos = [
+      {
+        name: 'repo1',
+        pullRequests: null,
+      },
+      {
+        name: 'repo2',
+        pullRequests: {
+          nodes: [],
+        },
+      },
+    ];
+
+    const groupedMRs = groupMRsBySemverBumps(repos);
+
+    expect(groupedMRs).toEqual({
+      repo1: {
+        major: [],
+        minorPatch: [],
+      },
+      repo2: {
+        major: [],
+        minorPatch: [],
+      },
+    });
   });
 });
 

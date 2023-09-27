@@ -1,5 +1,4 @@
 import { graphql } from '@octokit/graphql';
-import React from 'react';
 
 export const getStatusIcon = (condition: any, SuccessIcon: any, FailIcon: any) =>
     condition == true ? (
@@ -8,12 +7,38 @@ export const getStatusIcon = (condition: any, SuccessIcon: any, FailIcon: any) =
     <FailIcon size= { 16} fill = "red" ml = { 2} />
   );
 
+export const groupMRsBySemverBumps = (repos: any) => {
+  const groupedMRs: { [key: string]: { major: any[], minorPatch: any[] } } = {};
+
+  repos?.forEach((repo: any) => {
+    const repoName = repo.name;
+    const repoMRs = repo.pullRequests?.nodes;
+
+    groupedMRs[repoName] = {
+      major: [],
+      minorPatch: []
+    };
+
+    repoMRs?.forEach((mr: any) => {
+      const title = mr.title.toLowerCase();
+
+      if (title.includes("major")) {
+        groupedMRs[repoName].major.push(mr);
+      } else {
+        groupedMRs[repoName].minorPatch.push(mr);
+      }
+    });
+  });
+
+  return groupedMRs;
+};
+
 export const sortReposPRCount = (repos: any) =>
     repos?.sort((a: any, b: any) => {
         let retVal = 0;
         if (!a.pullRequests) retVal = -1;
         if (!b.pullRequests) retVal = 1;
-        a.pullRequests.nodes.length < b.pullRequests.nodes.length
+        a.pullRequests?.nodes.length < b.pullRequests?.nodes.length
             ? (retVal = 1)
             : (retVal = -1);
         return retVal;
